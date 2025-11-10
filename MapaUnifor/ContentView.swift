@@ -22,7 +22,7 @@ struct Bloco {
 
 struct Banheiro {
     var bloco: Bloco
-    var lcoatichon: Location
+    var location: Location
     var sexo: Character
     var acessivel: Bool
 }
@@ -37,7 +37,7 @@ enum Categoria {
 
 struct LocalizacaoDeInteresse {
     var bloco: Bloco
-    var locoation: Location
+    var location: Location
     var nome: String
     var categoria: Categoria
 }
