@@ -20,8 +20,14 @@ struct DetalhesSheetView: View {
                 Text(local.nome)
                     .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                     .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                Text("Bloco M - " + String(local.location?.andar ?? 0) + "º andar")
-                    .font(.headline)
+                if local.location?.andar == 0 {
+                    Text("Bloco M - Térreo")
+                        .font(.headline)
+                    
+                } else {
+                    Text("Bloco M - " + String(local.location?.andar ?? 0) + "º andar")
+                        .font(.headline)
+                }
                 Text(local.categoria.string)
                     .font(.subheadline)
                 Text(local.location?.descricao ?? "")
@@ -37,5 +43,5 @@ struct DetalhesSheetView: View {
 }
 
 #Preview {
-    DetalhesSheetView(local: LocalizacaoDeInteresse(id: 0, blocoID: 0, locationID: 0, nome: "Vortex", categoria: Categoria.laboratorio, location: Location(id: 0, latitude: 0, longitude: 0, descricao: "O Vortex desenvolve projetos de inovação tecnologica e capacita alunos para atuarem nessa área.")))
+    DetalhesSheetView(local: LocalizacaoDeInteresse(id: 0, blocoID: 0, locationID: 0, nome: "Laboratório Vortex", categoria: Categoria.laboratorio, location: Location(id: 0, latitude: 0, longitude: 0, andar: 0, descricao: "O Vortex desenvolve projetos de inovação tecnologica e capacita alunos para atuarem nessa área.")))
 }
