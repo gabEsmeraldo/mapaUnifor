@@ -43,14 +43,14 @@ struct ContatosView: View {
             Spacer()
             Link(destination: URL(string: "tel:\(contato.tel.filter { $0.isWholeNumber })")!) {
                 Image(systemName: "phone")
-                    .foregroundColor(.white)
+                    .foregroundColor(.branco)
                     .font(.largeTitle)
             }
             
         }
         .padding(.horizontal)
         .frame(width: 350, height: 80)
-        .background(.blue)
+        .background(.azul)
         .cornerRadius(8)
     }
 }
