@@ -16,20 +16,44 @@ struct Location {
     var descricao: String?
 }
 
-struct Bloco {
+struct Bloco: Hashable {
     var blocoID: Int
     var locationID: Int
-//    var location: Location
     var nome: String
+    var location: Location?
+
+    static func == (lhs: Bloco, rhs: Bloco) -> Bool {
+        return lhs.blocoID == rhs.blocoID
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(blocoID)
+    }
 }
 
-struct Banheiro {
+
+
+struct Banheiro: Hashable {
     var blocoID: Int
     var locationID: Int
 //    var bloco: Bloco
 //    var location: Location
     var sexo: Character
     var acessivel: Bool
+    var location: Location?
+    
+    
+    func inIn (bloco: Bloco) -> Bool {
+        return self.blocoID == bloco.blocoID
+    }
+    
+    static func == (lhs: Banheiro, rhs: Banheiro) -> Bool {
+        return lhs.blocoID == rhs.blocoID
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(blocoID)
+    }
 }
 
 enum Categoria {
@@ -43,13 +67,26 @@ enum Categoria {
     // TODO adicionar mais
 }
 
-struct LocalizacaoDeInteresse {
+struct LocalizacaoDeInteresse: Hashable {
     var blocoID: Int
     var locationID: Int
 //    var bloco: Bloco
 //    var location: Location
     var nome: String
     var categoria: Categoria
+    var location: Location?
+    
+    func inIn (bloco: Bloco) -> Bool {
+        return self.blocoID == bloco.blocoID
+    }
+    
+    static func == (lhs: LocalizacaoDeInteresse, rhs: LocalizacaoDeInteresse) -> Bool {
+        return lhs.blocoID == rhs.blocoID
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(blocoID)
+    }
 }
 
 
