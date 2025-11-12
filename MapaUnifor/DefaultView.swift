@@ -17,8 +17,14 @@ func getLocationPin(local: LocalizacaoDeInteresse) -> Image{
         Image(systemName: "bag.fill")
     case .pontoInstitucional:
         Image(systemName: "building.columns.fill")
+    case .equipamentoEsportivo:
+        Image(systemName: "volleyball")
+    case .auditorio:
+        Image(systemName: "rectangle.inset.filled.and.person.filled")
+    default:
+        Image(systemName: "mappin")
     }
-
+    
 }
 
 
@@ -26,30 +32,30 @@ struct DefaultView: View {
     
     
     var blocos = [
-        Bloco(blocoID: 1, locationID: 1, nome: "K", location: Location(
+        Bloco(id: 1, locationID: 1, nome: "K", location: Location(
             id: 1, latitude: -3.7698, longitude: -38.4788
         )),
-        Bloco(blocoID: 2, locationID: 2, nome: "J", location: Location(
+        Bloco(id: 2, locationID: 2, nome: "J", location: Location(
             id: 2, latitude: -3.7705, longitude: -38.4792
         )),
-        Bloco(blocoID: 3, locationID: 3, nome: "H", location: Location(
+        Bloco(id: 3, locationID: 3, nome: "H", location: Location(
             id: 3, latitude: -3.7710, longitude: -38.4782
         )),
     ]
     
     var localizacoes = [
-        LocalizacaoDeInteresse(
-            blocoID: 1, locationID: 4, nome: "Lab. de Informática", categoria: .laboratorio,
-            location: Location(id: 4, latitude: -3.7697, longitude: -38.4789)
-        ),
-        LocalizacaoDeInteresse(
-            blocoID: 2, locationID: 5, nome: "Cantina Bloco J", categoria: .lanchonete,
-            location: Location(id: 5, latitude: -3.7707, longitude: -38.4791)
-        ),
-        LocalizacaoDeInteresse(
-            blocoID: 3, locationID: 6, nome: "Secretaria Acadêmica", categoria: .secretariaAcademica,
-            location: Location(id: 6, latitude: -3.7709, longitude: -38.4781)
-        ),
+        LocalizacaoDeInteresse(id:1,
+                               blocoID: 1, locationID: 4, nome: "Lab. de Informática", categoria: .laboratorio,
+                               location: Location(id: 4, latitude: -3.7697, longitude: -38.4789)
+                              ),
+        LocalizacaoDeInteresse(id:2,
+                               blocoID: 2, locationID: 5, nome: "Cantina Bloco J", categoria: .lanchonete,
+                               location: Location(id: 5, latitude: -3.7707, longitude: -38.4791)
+                              ),
+        LocalizacaoDeInteresse(id:3,
+                               blocoID: 3, locationID: 6, nome: "Secretaria Acadêmica", categoria: .secretariaAcademica,
+                               location: Location(id: 6, latitude: -3.7709, longitude: -38.4781)
+                              ),
     ]
     
     var banheiros = [
@@ -86,19 +92,18 @@ struct DefaultView: View {
             Map(position: $position) {
                 
                 // MARK: Blocos
-                ForEach(blocos, id: \.self) { bloco in
+                ForEach(blocos, id: \.id) { bloco in
                     Annotation(bloco.nome, coordinate: CLLocationCoordinate2D(
                         latitude: bloco.location?.latitude ?? 0.0,
                         longitude: bloco.location?.longitude ?? 0.0)
                     ) {
                         Button {
-                            // Define o bloco selecionado
                             selectBloco(bloco)
                         } label: {
                             VStack {
                                 Image(systemName: "building.columns")
                                     .font(.title)
-                                    .foregroundStyle(selectedBloco == bloco ? .red : .blue)
+                                    .foregroundStyle(bloco == selectedBloco ? .red : .blue)
                                 Text(bloco.nome)
                                     .font(.caption2)
                                     .bold()
@@ -107,7 +112,7 @@ struct DefaultView: View {
                     }
                 }
                 
-                ForEach(localizacoes, id: \.self) { local in
+                ForEach(localizacoes, id: \.id) { local in
                     if let blocoSelecionado = selectedBloco,
                        local.inIn(bloco: blocoSelecionado) {
                         
@@ -126,7 +131,6 @@ struct DefaultView: View {
                     }
                 }
                 
-                // MARK: Banheiros
                 ForEach(banheiros, id: \.self) { banheiro in
                     if let blocoSelecionado = selectedBloco,
                        banheiro.inIn(bloco: blocoSelecionado) {
@@ -196,7 +200,7 @@ struct DefaultView: View {
             }
         }
     }
-
+    
 }
 
 #Preview {
