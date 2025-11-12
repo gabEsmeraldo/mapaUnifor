@@ -8,7 +8,7 @@
 import Foundation
  //Analisar como organizar o banco baseado nas structs, também checar se seria possível usar somente um, ou necessario usar um por struct.
 //Checar se realmente a implementação utilizando id é mais facil do que com os objetos
-struct Location {
+struct Location: Identifiable {
     var id: Int
     var latitude: Double
     var longitude: Double
@@ -16,8 +16,8 @@ struct Location {
     var descricao: String?
 }
 
-struct Bloco: Hashable {
-    var blocoID: Int
+struct Bloco: Identifiable {
+    var id: Int
     var locationID: Int
     var nome: String
     var location: Location?
@@ -56,18 +56,22 @@ struct Banheiro: Hashable {
     }
 }
 
-enum Categoria {
+enum Categoria: CaseIterable, Identifiable {
     case laboratorio
     case centroAcademico
     case secretariaAcademica
+    case equipamentoEsportivo
+    case auditorio
     case pontoCarrinho
     case lanchonete
     case vendinha
     case pontoInstitucional
     // TODO adicionar mais
+    var id: Self { self }
 }
 
-struct LocalizacaoDeInteresse: Hashable {
+struct LocalizacaoDeInteresse: Identifiable{
+    var id: Int
     var blocoID: Int
     var locationID: Int
 //    var bloco: Bloco
