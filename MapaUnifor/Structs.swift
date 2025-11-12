@@ -75,6 +75,20 @@ enum Categoria: CaseIterable, Identifiable {
     case pontoInstitucional
     // TODO adicionar mais
     var id: Self { self }
+    
+    var string: String {
+        switch self {
+        case .laboratorio: return "Laboratório"
+        case .centroAcademico: return "Centro Acadêmico"
+        case .secretariaAcademica: return "Secretaria Acadêmica"
+        case .equipamentoEsportivo: return "Equipamento Esportivo"
+        case .auditorio: return "Auditório"
+        case .pontoCarrinho: return "Ponto de Carrinho"
+        case .lanchonete: return "Lanchonete"
+        case .vendinha: return "Vendinha"
+        case .pontoInstitucional: return "Ponto Institucional"
+        }
+    }
 }
 
 struct LocalizacaoDeInteresse: Identifiable, Hashable{
