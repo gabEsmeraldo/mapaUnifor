@@ -155,7 +155,7 @@ struct DefaultView: View {
             
             VStack {
                 HStack {
-                    
+                    // TO-DO Confirmar que variavel do picker está alterando conforme o bloco selecionado
                     Picker("Bloco", selection: Binding(
                         get: { selectedBloco ?? blocos.first },
                         set: { bloco in

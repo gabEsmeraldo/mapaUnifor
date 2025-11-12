@@ -45,7 +45,7 @@ struct Banheiro: Hashable {
     var locationID: Int
     //    var bloco: Bloco
     //    var location: Location
-    var sexo: Character
+    var sexo: String
     var acessivel: Bool
     var location: Location?
     
