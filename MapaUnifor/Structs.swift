@@ -36,6 +36,8 @@ enum Categoria {
     case laboratorio
     case centroAcademico
     case secretariaAcademica
+    case equipamentoEsportivo
+    case auditorio
     case pontoCarrinho
     case lanchonete
     case vendinha
