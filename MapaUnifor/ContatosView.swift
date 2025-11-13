@@ -52,6 +52,12 @@ struct ContatosView: View {
         .frame(width: 350, height: 80)
         .background(.azul)
         .cornerRadius(8)
+        .scrollTransition { content, phase in
+            content
+                .opacity(phase.isIdentity ? 1 : 0)
+                .scaleEffect(phase.isIdentity ? 1 : 0.75)
+                .blur(radius: phase.isIdentity ? 0 : 10)
+        }
     }
 }
 
