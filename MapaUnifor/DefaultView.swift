@@ -202,24 +202,30 @@ struct DefaultView: View {
     }
         
     private func handleLocalizacaoTap(_ local: LocalizacaoDeInteresse) {
-        let now = Date()
+//        let now = Date()
         
-        if let last = lastTappedLocalizacao,
-           last.id == local.id,
-           let lastTapTime = lastTapDate,
-           now.timeIntervalSince(lastTapTime) < 1.5 {
-            // Segundo toque → abre o sheet
-            selectedLocalizacao = local
-        } else {
-            // Primeiro toque → dá zoom
-            if let loc = local.location {
-                zoomInto(loc)
-            }
+//        if let last = lastTappedLocalizacao,
+//           last.id == local.id,
+//           let lastTapTime = lastTapDate,
+//           now.timeIntervalSince(lastTapTime) < 1.5 {
+//            selectedLocalizacao = local
+//        } else {
+//            if let loc = local.location {
+//                zoomInto(loc)
+//            }
+//        }
+        
+//        lastTappedLocalizacao = local
+//        lastTapDate = now
+        
+        withAnimation(.easeInOut(duration: 0.5)) {
+            zoomInto(local.location!)
         }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                selectedLocalizacao = local
+            }
         
-        // Atualiza o controle de toque
-        lastTappedLocalizacao = local
-        lastTapDate = now
     }
     
     private func selectBloco(_ bloco: Bloco) {
