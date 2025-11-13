@@ -1,7 +1,7 @@
 import SwiftUI
 import MapKit
 
-func getLocationPin(local: LocalizacaoDeInteresse) -> Image{
+func getLocationPin(local: LocalizacaoDeInteresse) -> Image {
     switch local.categoria {
     case .laboratorio:
         Image(systemName: "testtube.2")
@@ -24,12 +24,9 @@ func getLocationPin(local: LocalizacaoDeInteresse) -> Image{
     default:
         Image(systemName: "mappin")
     }
-    
 }
 
-
 struct DefaultView: View {
-    
     
     var blocos = [
         Bloco(id: 1, locationID: 1, nome: "K", location: Location(
@@ -44,15 +41,15 @@ struct DefaultView: View {
     ]
     
     var localizacoes = [
-        LocalizacaoDeInteresse(id:1,
+        LocalizacaoDeInteresse(id: 1,
                                blocoID: 1, locationID: 4, nome: "Lab. de Informática", categoria: .laboratorio,
                                location: Location(id: 4, latitude: -3.7697, longitude: -38.4789)
                               ),
-        LocalizacaoDeInteresse(id:2,
+        LocalizacaoDeInteresse(id: 2,
                                blocoID: 2, locationID: 5, nome: "Cantina Bloco J", categoria: .lanchonete,
                                location: Location(id: 5, latitude: -3.7707, longitude: -38.4791)
                               ),
-        LocalizacaoDeInteresse(id:3,
+        LocalizacaoDeInteresse(id: 3,
                                blocoID: 3, locationID: 6, nome: "Secretaria Acadêmica", categoria: .secretariaAcademica,
                                location: Location(id: 6, latitude: -3.7709, longitude: -38.4781)
                               ),
@@ -69,12 +66,13 @@ struct DefaultView: View {
                  location: Location(id: 10, latitude: -3.77095, longitude: -38.47815)),
     ]
     
-    // MARK: - Estados
-    
+    @State private var selectedBlocoID: Int?
     @State var selectedBloco: Bloco? = nil
     @State private var position: MapCameraPosition
     
-    // MARK: - Inicialização
+    @State private var selectedLocalizacao: LocalizacaoDeInteresse? = nil
+    @State private var lastTappedLocalizacao: LocalizacaoDeInteresse? = nil
+    @State private var lastTapDate: Date? = nil
     
     init() {
         _position = State(initialValue: .region(
@@ -85,13 +83,10 @@ struct DefaultView: View {
         ))
     }
     
-    // MARK: - View
-    
     var body: some View {
         ZStack {
             Map(position: $position) {
                 
-                // MARK: Blocos
                 ForEach(blocos, id: \.id) { bloco in
                     Annotation(bloco.nome, coordinate: CLLocationCoordinate2D(
                         latitude: bloco.location?.latitude ?? 0.0,
@@ -114,38 +109,54 @@ struct DefaultView: View {
                 
                 ForEach(localizacoes, id: \.id) { local in
                     if let blocoSelecionado = selectedBloco,
-                       local.inIn(bloco: blocoSelecionado) {
+                       local.inIn(bloco: blocoSelecionado),
+                       let loc = local.location {
                         
                         Annotation(local.nome, coordinate: CLLocationCoordinate2D(
-                            latitude: local.location?.latitude ?? 0.0,
-                            longitude: local.location?.longitude ?? 0.0)
+                            latitude: loc.latitude,
+                            longitude: loc.longitude)
                         ) {
-                            VStack {
-                                getLocationPin(local: local)
-                                    .font(.title)
-                                    .foregroundStyle(.green)
-                                Text(local.nome)
-                                    .font(.caption2)
+                            Button {
+                                handleLocalizacaoTap(local)
+                            } label: {
+                                VStack(spacing: 2) {
+                                    getLocationPin(local: local)
+                                        .font(.title)
+                                        .foregroundStyle(.green)
+                                    Text(local.nome)
+                                        .font(.caption2)
+                                }
                             }
+                            .buttonStyle(.plain)
+                            .contentShape(Circle())
                         }
                     }
                 }
                 
                 ForEach(banheiros, id: \.self) { banheiro in
                     if let blocoSelecionado = selectedBloco,
-                       banheiro.inIn(bloco: blocoSelecionado) {
+                       banheiro.inIn(bloco: blocoSelecionado),
+                       let loc = banheiro.location {
                         
                         Annotation("Banheiro \(banheiro.sexo)", coordinate: CLLocationCoordinate2D(
-                            latitude: banheiro.location?.latitude ?? 0.0,
-                            longitude: banheiro.location?.longitude ?? 0.0)
+                            latitude: loc.latitude,
+                            longitude: loc.longitude)
                         ) {
-                            VStack {
-                                Image(systemName: banheiro.sexo == "M" ? "figure.dress.line.vertical.figure" : "figure.line.vertical.figure.dress")
-                                    .font(.title)
-                                    .foregroundStyle(.yellow)
-                                Text("Banheiro \(banheiro.sexo)")
-                                    .font(.caption2)
+                            Button {
+                                zoomInto(loc)
+                            } label: {
+                                VStack(spacing: 2) {
+                                    Image(systemName: banheiro.sexo == "M"
+                                          ? "figure.dress.line.vertical.figure"
+                                          : "figure.line.vertical.figure.dress")
+                                        .font(.title)
+                                        .foregroundStyle(.yellow)
+                                    Text("Banheiro \(banheiro.sexo)")
+                                        .font(.caption2)
+                                }
                             }
+                            .buttonStyle(.plain)
+                            .contentShape(Circle())
                         }
                     }
                 }
@@ -155,17 +166,17 @@ struct DefaultView: View {
             
             VStack {
                 HStack {
-                    // TO-DO Confirmar que variavel do picker está alterando conforme o bloco selecionado
                     Picker("Bloco", selection: Binding(
-                        get: { selectedBloco ?? blocos.first },
-                        set: { bloco in
-                            if let bloco = bloco {
+                        get: { selectedBlocoID ?? blocos.first?.id },
+                        set: { blocoID in
+                            if let bloco = blocos.first(where: { $0.id == blocoID }) {
                                 selectBloco(bloco)
+                                selectedBlocoID = bloco.id
                             }
                         }
                     )) {
-                        ForEach(blocos, id: \.self) { bloco in
-                            Text("Bloco \(bloco.nome)").tag(Optional(bloco))
+                        ForEach(blocos, id: \.id) { bloco in
+                            Text("Bloco \(bloco.nome)").tag(Optional(bloco.id))
                         }
                     }
                     .pickerStyle(.menu)
@@ -185,23 +196,49 @@ struct DefaultView: View {
                 selectBloco(primeiro)
             }
         }
+        .sheet(item: $selectedLocalizacao) { local in
+            DetalhesSheetView(local: local)
+        }
     }
-    
-    // MARK: - Funções auxiliares
+        
+    private func handleLocalizacaoTap(_ local: LocalizacaoDeInteresse) {
+        let now = Date()
+        
+        if let last = lastTappedLocalizacao,
+           last.id == local.id,
+           let lastTapTime = lastTapDate,
+           now.timeIntervalSince(lastTapTime) < 1.5 {
+            // Segundo toque → abre o sheet
+            selectedLocalizacao = local
+        } else {
+            // Primeiro toque → dá zoom
+            if let loc = local.location {
+                zoomInto(loc)
+            }
+        }
+        
+        // Atualiza o controle de toque
+        lastTappedLocalizacao = local
+        lastTapDate = now
+    }
     
     private func selectBloco(_ bloco: Bloco) {
         selectedBloco = bloco
         if let loc = bloco.location {
-            withAnimation(.easeInOut(duration: 0.5)) {
-                position = .region(MKCoordinateRegion(
-                    center: CLLocationCoordinate2D(latitude: loc.latitude, longitude: loc.longitude),
-                    span: MKCoordinateSpan(latitudeDelta: 0.00002, longitudeDelta: 0.00002)
-                ))
-            }
+            zoomInto(loc)
         }
     }
     
+    private func zoomInto(_ location: Location) {
+        withAnimation(.easeInOut(duration: 0.5)) {
+            position = .region(MKCoordinateRegion(
+                center: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude),
+                span: MKCoordinateSpan(latitudeDelta: 0.00002, longitudeDelta: 0.00002)
+            ))
+        }
+    }
 }
+
 
 #Preview {
     DefaultView()
