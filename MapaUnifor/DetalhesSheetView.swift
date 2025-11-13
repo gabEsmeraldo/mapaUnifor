@@ -20,23 +20,25 @@ struct DetalhesSheetView: View {
                 Text(local.nome)
                     .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
                     .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                if local.location?.andar == 0 {
-                    Text("Bloco M - Térreo")
+                if local.location?.andar ?? 0 > 0 {
+                    Text("Bloco M - " + String(local.location?.andar ?? 0) + "º andar")
                         .font(.headline)
                     
                 } else {
-                    Text("Bloco M - " + String(local.location?.andar ?? 0) + "º andar")
+                    Text("Bloco M - Térreo")
                         .font(.headline)
                 }
                 Text(local.categoria.string)
                     .font(.subheadline)
-                ScrollView{
-                    Text(local.location?.descricao ?? "")
-                     
+                if ((local.location?.descricao) != nil) {
+                    ScrollView{
+                        Text(local.location?.descricao ?? "")
+                        
+                    }
+                    .frame(width: 300)
+                    .frame(maxHeight: 120)
+                    .padding(.top)
                 }
-                .frame(width: 300)
-                .frame(maxHeight: 120)
-                .padding(.top)
                 
             }
             .padding()
