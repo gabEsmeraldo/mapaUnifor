@@ -9,35 +9,46 @@ import SwiftUI
 
 struct DetalhesSheetView: View {
     let local: LocalizacaoDeInteresse
+    let defaultView = DefaultView()
      
     var body: some View {
         ZStack {
             Color(.azul)
                 .ignoresSafeArea()
-            VStack (alignment: .center){
-                AsyncImage(url: URL(string: "https://example.com/your_image.jpg"))
-                    .frame(width: 300, height: 400)
-                Text(local.nome)
-                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                if local.location?.andar == 0 {
-                    Text("Bloco M - Térreo")
-                        .font(.headline)
+            VStack {
+                VStack (alignment: .center){
+                    AsyncImage(url: URL(string: "https://example.com/your_image.jpg"))
+                        .frame(width: 300, height: 400)
+                    Text(local.nome)
+                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                    if local.location?.andar == 0 {
+                        Text("Bloco M - Térreo")
+                            .font(.headline)
+                        
+                    } else {
+                        Text("Bloco M - " + String(local.location?.andar ?? 0) + "º andar")
+                            .font(.headline)
+                    }
+                    Text(local.categoria.string)
+                        .font(.subheadline)
+                    Text(local.location?.descricao ?? "")
+                        .frame(width: 300)
+                        .padding(.top)
                     
-                } else {
-                    Text("Bloco M - " + String(local.location?.andar ?? 0) + "º andar")
-                        .font(.headline)
                 }
-                Text(local.categoria.string)
-                    .font(.subheadline)
-                Text(local.location?.descricao ?? "")
-                    .frame(width: 300)
-                    .padding(.top)
-                
+                .padding()
+                .background(.branco)
+                .cornerRadius(8)
+                Button("Mostrar Rota"){
+                    defaultView.get
+                }
+                .padding()
+                .background(.branco)
+                .foregroundStyle(.black)
+                .cornerRadius(8)
+                .padding()
             }
-            .padding()
-            .background(.branco)
-            .cornerRadius(8)
         }
     }
 }
