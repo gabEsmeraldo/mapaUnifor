@@ -63,5 +63,6 @@ struct ContatosView: View {
 
 #Preview {
     ContatosView()
+        .environmentObject(MapCoordinator())
 }
 

@@ -28,7 +28,9 @@ func getLocationPin(local: LocalizacaoDeInteresse) -> Image {
 
 struct DefaultView: View {
     
-    @Binding var routeToLocal: MKRoute?
+    @EnvironmentObject var coordinator: MapCoordinator
+    
+    @StateObject var routeManager = RouteManager()
     
     var blocos = [
         Bloco(id: 1, locationID: 1, nome: "K", location: Location(
@@ -77,24 +79,30 @@ struct DefaultView: View {
     @State private var lastTappedLocalizacao: LocalizacaoDeInteresse? = nil
     @State private var lastTapDate: Date? = nil
     
-    init() {
-        _position = State(initialValue: .region(
-            MKCoordinateRegion(
-                center: CLLocationCoordinate2D(latitude: -3.7700, longitude: -38.4788),
-                span: MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001)
-            )
-        ))
+    var preselectedLocation: LocalizacaoDeInteresse?
+    
+    
+    init(preselectedLocation: LocalizacaoDeInteresse? = nil) {
+        self.preselectedLocation = preselectedLocation
+        _position = State(initialValue:
+                .region(MKCoordinateRegion(
+                    center: CLLocationCoordinate2D(latitude: -3.7700, longitude: -38.4788),
+                    span: MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001)
+                ))
+        )
     }
     
     var body: some View {
         ZStack {
             Map(position: $position) {
                 
-                if let routeToLocal{
-                    MapPolyline(routeToLocal)
-                        .stroke(.blue, lineWidth: 5)
+                if routeManager.showingRoute{
+                    if let route = routeManager.route{
+                        MapPolyline(route)
+                            .stroke(.blue, lineWidth: 5)
+                        
+                    }
                 }
-                
                 ForEach(blocos, id: \.id) { bloco in
                     Annotation(bloco.nome, coordinate: CLLocationCoordinate2D(
                         latitude: bloco.location?.latitude ?? 0.0,
@@ -157,8 +165,8 @@ struct DefaultView: View {
                                     Image(systemName: banheiro.sexo == "M"
                                           ? "figure.dress.line.vertical.figure"
                                           : "figure.line.vertical.figure.dress")
-                                        .font(.title)
-                                        .foregroundStyle(.yellow)
+                                    .font(.title)
+                                    .foregroundStyle(.yellow)
                                     Text("Banheiro \(banheiro.sexo)")
                                         .font(.caption2)
                                 }
@@ -200,54 +208,57 @@ struct DefaultView: View {
             }
         }
         .onAppear {
-            /* TO DO
-             if preselectedLocation != nil {
-                for bloco in blocos {
-                    if bloco.id == preselectedLocation?.blocoID {
-                        selectedBloco = bloco
-                        break
-                    }
+            if let local = preselectedLocation {
+                
+                if let bloco = blocos.first(where: { $0.id == local.blocoID }) {
+                    selectedBloco = bloco
                 }
-                withAnimation(.easeInOut(duration: 2)) {
-                    zoomInto((preselectedLocation?.location!)!)
+                
+                if let loc = local.location {
+                    withAnimation { zoomInto(loc) }
                 }
-                 
-            }
-            else*/ if let primeiro = blocos.first {
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                    selectedLocalizacao = local
+                }
+                
+            } else if let primeiro = blocos.first {
                 selectBloco(primeiro)
             }
-        }
-        .sheet(item: $selectedLocalizacao) { local in
-            DetalhesSheetView(local: local)
-        }
-    }
-        
-    private func handleLocalizacaoTap(_ local: LocalizacaoDeInteresse) {
-//        let now = Date()
-        
-//        if let last = lastTappedLocalizacao,
-//           last.id == local.id,
-//           let lastTapTime = lastTapDate,
-//           now.timeIntervalSince(lastTapTime) < 1.5 {
-//            selectedLocalizacao = local
-//        } else {
-//            if let loc = local.location {
-//                zoomInto(loc)
-//            }
-//        }
-        
-//        lastTappedLocalizacao = local
-//        lastTapDate = now
-        
-        withAnimation(.easeInOut(duration: 0.5)) {
-            zoomInto(local.location!)
-        }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                selectedLocalizacao = local
+        }
+        .onChange(of: coordinator.selectedLocalizacao) { newValue in
+            if newValue == nil {
+                return
             }
+            if let local = newValue {
+                selectedLocalizacao = local
+                handleLocalizacaoTap(local)
+            }
+        }
         
+        .sheet(item: $selectedLocalizacao, onDismiss: {
+            coordinator.selectedLocalizacao = nil
+        }) { local in
+            DetalhesSheetView(local: local, routeManager: routeManager)
+        }
     }
+    
+    private func handleLocalizacaoTap(_ local: LocalizacaoDeInteresse) {
+        guard let loc = local.location else { return }
+        
+        // Faz o zoom suave até a localização
+        withAnimation(.easeInOut(duration: 0.5)) {
+            zoomInto(loc)
+        }
+        
+        // Ativa a rota antes de abrir a sheet
+        routeManager.showingRoute = true
+        
+        // Atualiza a seleção da localização sem atrasos
+        selectedLocalizacao = local
+    }
+
     
     private func selectBloco(_ bloco: Bloco) {
         selectedBloco = bloco
@@ -269,4 +280,6 @@ struct DefaultView: View {
 
 #Preview {
     DefaultView()
+        .environmentObject(MapCoordinator())
+
 }

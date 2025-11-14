@@ -8,20 +8,29 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var coordinator = MapCoordinator()
+
+    
     var body: some View {
-        TabView{
+        TabView(selection: $coordinator.selectedTab) {
                     DefaultView()
+                        .environmentObject(coordinator)
                         .tabItem {
                             Label("Mapa", systemImage: "map.fill")
                         }
+                        .tag(0)
                     ListView()
+                        .environmentObject(coordinator)
                         .tabItem {
                             Label("Lista", systemImage: "list.bullet")
                         }
+                        .tag(1)
                     ContatosView()
+                        .environmentObject(coordinator)
                         .tabItem {
                             Label("Contatos", systemImage: "phone.fill")
                         }
+                        .tag(2)
                 }
                 .onAppear(){
                     UITabBar.appearance().backgroundColor = (.branco)
@@ -32,4 +41,6 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environmentObject(MapCoordinator())
+
 }

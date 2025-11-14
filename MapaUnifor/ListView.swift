@@ -8,22 +8,46 @@
 import SwiftUI
 
 struct ListView: View {
-    let localidades : [Location] = [
-        Location(id: 1, latitude: -3.768089, longitude: -38.479180, descricao: "massa"),
-        Location(id: 2, latitude: -3.768089, longitude: -38.479180, descricao: "legal"),
-        Location(id: 3, latitude: -3.768089, longitude: -38.479180, descricao: "bacana"),
-        Location(id: 4, latitude: -3.768089, longitude: -38.479180, descricao: "testado")
+    
+    @EnvironmentObject var coordinator: MapCoordinator
+    @State var showingBloco: Bloco? = nil
+    
+    var blocos = [
+        Bloco(id: 1, locationID: 1, nome: "K", location: Location(
+            id: 1, latitude: -3.7698, longitude: -38.4788
+        )),
+        Bloco(id: 2, locationID: 2, nome: "J", location: Location(
+            id: 2, latitude: -3.7705, longitude: -38.4792
+        )),
+        Bloco(id: 3, locationID: 3, nome: "H", location: Location(
+            id: 3, latitude: -3.7710, longitude: -38.4782
+        )),
     ]
-    let blocos : [Bloco] = [
-        Bloco(id: 1, locationID: 1, nome: "Bloco R"),
-        Bloco(id: 2, locationID: 2, nome: "Bloco X"),
-        Bloco(id: 3, locationID: 4, nome: "Bloco D")
+    
+    var localidadesDeInteresse = [
+        LocalizacaoDeInteresse(id: 1,
+                               blocoID: 1, locationID: 4, nome: "Lab. de Informática", categoria: .laboratorio,
+                               location: Location(id: 4, latitude: -3.7697, longitude: -38.4789)
+                              ),
+        LocalizacaoDeInteresse(id: 2,
+                               blocoID: 2, locationID: 5, nome: "Cantina Bloco J", categoria: .lanchonete,
+                               location: Location(id: 5, latitude: -3.7707, longitude: -38.4791)
+                              ),
+        LocalizacaoDeInteresse(id: 3,
+                               blocoID: 3, locationID: 6, nome: "Secretaria Acadêmica", categoria: .secretariaAcademica,
+                               location: Location(id: 6, latitude: -3.7709, longitude: -38.4781)
+                              ),
     ]
-    let localidadesDeInteresse : [LocalizacaoDeInteresse] = [
-        LocalizacaoDeInteresse(id: 1, blocoID: 1, locationID: 3, nome: "Centro academia de Medicina", categoria: Categoria.centroAcademico),
-        LocalizacaoDeInteresse(id: 2, blocoID: 2, locationID: 4, nome: "Centro academia de odontologia", categoria: Categoria.centroAcademico),
-        LocalizacaoDeInteresse(id: 3, blocoID: 2, locationID: 4, nome: "Centro academia de tecnologia", categoria: Categoria.centroAcademico),
-        LocalizacaoDeInteresse(id: 4, blocoID: 3, locationID: 4, nome: "Centro academia de biografias", categoria: Categoria.centroAcademico)
+    
+    var banheiros = [
+        Banheiro(blocoID: 1, locationID: 7, sexo: "M", acessivel: true,
+                 location: Location(id: 7, latitude: -3.76975, longitude: -38.47885)),
+        Banheiro(blocoID: 1, locationID: 8, sexo: "F", acessivel: true,
+                 location: Location(id: 8, latitude: -3.76978, longitude: -38.47882)),
+        Banheiro(blocoID: 2, locationID: 9, sexo: "M", acessivel: false,
+                 location: Location(id: 9, latitude: -3.77065, longitude: -38.47905)),
+        Banheiro(blocoID: 3, locationID: 10, sexo: "F", acessivel: true,
+                 location: Location(id: 10, latitude: -3.77095, longitude: -38.47815)),
     ]
     var body: some View {
         ZStack {
@@ -38,22 +62,38 @@ struct ListView: View {
                                     .font(.title)
                                     .fontWeight(.bold)
                                     .padding([.bottom], 10)
-                                ForEach(localidadesDeInteresse){ local in
-                                    if(bloco.id == local.blocoID){
-                                        //Add Navigation link
-                                        HStack {
-//                                            NavigationLink(destination: DefaultView(preselectedLocation: local)) {
-//                                                Image(systemName: "house")
-//                                            }
-                                            Text("\(local.nome)")
-                                                .font(.title3)
-                                                .fontWeight(.medium)
-                                                .padding([.vertical], 5)
-                                                .padding([.trailing], -20)
-                                            Spacer()
-                                            Image(systemName: "questionmark.circle.fill")
+                                    .onTapGesture {
+                                        withAnimation {
+                                            if bloco == showingBloco{
+                                                showingBloco = nil
+                                            } else {
+                                                showingBloco = bloco
+                                            }
                                         }
+                                    }
+                                if (showingBloco == bloco){
+                                    ForEach(localidadesDeInteresse){ local in
+                                        if(bloco.id == local.blocoID){
+                                            //Add Navigation link
+                                            HStack {
+                                                //                                            NavigationLink(destination: DefaultView(preselectedLocation: local)) {
+                                                //                                                Image(systemName: "house")
+                                                //                                            }
+                                                Text("\(local.nome)")
+                                                    .font(.title3)
+                                                    .fontWeight(.medium)
+                                                    .padding([.vertical], 5)
+                                                    .padding([.trailing], -20)
+                                                Spacer()
+                                                Image(systemName: "questionmark.circle.fill")
+                                                    .onTapGesture{
+                                                        coordinator.selectedLocalizacao = local
+                                                                                                        coordinator.selectedTab = 0
+
+                                                    }
+                                            }
                                             
+                                        }
                                     }
                                 }
                             }
@@ -67,10 +107,14 @@ struct ListView: View {
                     }
                 }
             }
+            
+
         }
     }
 }
 
 #Preview {
     ListView()
+        .environmentObject(MapCoordinator())
+
 }

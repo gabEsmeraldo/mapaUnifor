@@ -16,7 +16,7 @@ struct Location: Identifiable {
     var descricao: String?
 }
 
-struct Bloco: Identifiable, Hashable {
+struct Bloco: Identifiable, Hashable, Equatable {
     var id: Int
     var locationID: Int
     var nome: String
@@ -30,7 +30,7 @@ struct Bloco: Identifiable, Hashable {
     }
     
     static func == (lhs: Bloco, rhs: Bloco) -> Bool {
-        return false
+        return lhs.id == rhs.id
     }
     
     func hash(into hasher: inout Hasher) {

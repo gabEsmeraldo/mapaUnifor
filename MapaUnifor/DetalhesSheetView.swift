@@ -11,28 +11,8 @@ import MapKit
 struct DetalhesSheetView: View {
     let local: LocalizacaoDeInteresse
 //    let defaultView = DefaultView()
-    private let startingPoint = CLLocationCoordinate2D(
-        latitude: -3.768171,
-        longitude: -38.478447
-    )
-    
-    @State var route: MKRoute?
-    
-    func getDirections() {
-        self.route = nil
-        
-        // Create and configure the request
-        let request = MKDirections.Request()
-        request.source = MKMapItem(placemark: MKPlacemark(coordinate: self.startingPoint))
-        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: local.location?.latitude ?? -3.769029, longitude: local.location?.longitude ?? -38.481205)))
-        
-        // Get the directions based on the request
-        Task {
-            let directions = MKDirections(request: request)
-            let response = try? await directions.calculate()
-            route = response?.routes.first
-        }
-    }
+    var routeManager: RouteManager
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         ZStack {
@@ -68,10 +48,17 @@ struct DetalhesSheetView: View {
             .background(.branco)
             .cornerRadius(8)
             
-            Button("Mostrar Rota"){
-                getDirections()
-                
+            Button("Mostrar Rota") {
+                if let lat = local.location?.latitude,
+                   let lon = local.location?.longitude {
+                    routeManager.setDestination(latitude: lat, longitude: lon)
+                    routeManager.getDirections()
+                    routeManager.showingRoute = true
+                    
+                }
+                dismiss()
             }
+
             .padding()
             .background(.branco)
             .foregroundStyle(.black)
@@ -84,5 +71,7 @@ struct DetalhesSheetView: View {
 
 
 #Preview {
-    DetalhesSheetView(local: LocalizacaoDeInteresse(id: 0, blocoID: 0, locationID: 0, nome: "Laboratório Vortex", categoria: Categoria.laboratorio, location: Location(id: 0, latitude: 0, longitude: 0, andar: 0, descricao: "O Vortex desenvolve projetos de inovação tecnologica e capacita alunos para atuarem nessa área. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla commodo libero aliquet consequat fringilla. Aliquam nulla purus, pellentesque sit amet volutpat ac, accumsan in purus. Proin id convallis tortor, nec ultrices sem. Quisque sodales leo quis leo blandit egestas. Curabitur id arcu eros. Praesent sed metus orci. Quisque dictum vel nibh eget dapibus. Fusce pulvinar porttitor dignissim. Vivamus eleifend justo et justo malesuada pellentesque. Sed non urna ut orci volutpat facilisis sodales sed massa. Morbi eget ligula vehicula, pretium arcu at, sodales tortor. Nulla id consectetur lectus. Maecenas blandit leo ac convallis facilisis.")))
+    DetalhesSheetView(local: LocalizacaoDeInteresse(id: 0, blocoID: 0, locationID: 0, nome: "Laboratório Vortex", categoria: Categoria.laboratorio, location: Location(id: 0, latitude: 0, longitude: 0, andar: 0, descricao: "O Vortex desenvolve projetos de inovação tecnologica e capacita alunos para atuarem nessa área. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla commodo libero aliquet consequat fringilla. Aliquam nulla purus, pellentesque sit amet volutpat ac, accumsan in purus. Proin id convallis tortor, nec ultrices sem. Quisque sodales leo quis leo blandit egestas. Curabitur id arcu eros. Praesent sed metus orci. Quisque dictum vel nibh eget dapibus. Fusce pulvinar porttitor dignissim. Vivamus eleifend justo et justo malesuada pellentesque. Sed non urna ut orci volutpat facilisis sodales sed massa. Morbi eget ligula vehicula, pretium arcu at, sodales tortor. Nulla id consectetur lectus. Maecenas blandit leo ac convallis facilisis.")), routeManager: RouteManager())
+        .environmentObject(MapCoordinator())
+
 }
