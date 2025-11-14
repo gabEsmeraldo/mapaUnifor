@@ -28,6 +28,30 @@ func getLocationPin(local: LocalizacaoDeInteresse) -> Image {
 
 struct DefaultView: View {
     
+    var coordenadasRotaCarrinho = [
+        CLLocationCoordinate2D(latitude: -3.76834, longitude: -38.47850),
+        CLLocationCoordinate2D(latitude: -3.76872, longitude: -38.47944),
+        CLLocationCoordinate2D(latitude: -3.76658, longitude: -38.48036),
+        CLLocationCoordinate2D(latitude: -3.76650, longitude: -38.47932),
+        CLLocationCoordinate2D(latitude: -3.76905, longitude: -38.47826),
+        CLLocationCoordinate2D(latitude: -3.76923, longitude: -38.47836),
+        CLLocationCoordinate2D(latitude: -3.76934, longitude: -38.47863),
+        CLLocationCoordinate2D(latitude: -3.77036, longitude: -38.47823),
+        CLLocationCoordinate2D(latitude: -3.77010, longitude: -38.47588),
+        CLLocationCoordinate2D(latitude: -3.76706, longitude: -38.47624),
+        CLLocationCoordinate2D(latitude: -3.76695, longitude: -38.47642),
+        CLLocationCoordinate2D(latitude: -3.76703, longitude: -38.47766),
+        CLLocationCoordinate2D(latitude: -3.76857, longitude: -38.47752),
+        CLLocationCoordinate2D(latitude: -3.76860, longitude: -38.47813),
+        CLLocationCoordinate2D(latitude: -3.76827, longitude: -38.47836),
+        CLLocationCoordinate2D(latitude: -3.76834, longitude: -38.47850)
+    ]
+    
+    var rotaCarrinho: MKPolyline {
+        MKPolyline(coordinates: coordenadasRotaCarrinho, count: coordenadasRotaCarrinho.count)
+    }
+    
+    
     var blocos = [
         Bloco(id: 1, locationID: 1, nome: "K", location: Location(
             id: 1, latitude: -3.7698, longitude: -38.4788
@@ -68,6 +92,7 @@ struct DefaultView: View {
     @State private var selectedBlocoID: Int?
     @State var selectedBloco: Bloco? = nil
     @State private var position: MapCameraPosition
+    @State private var showingRotaCarrinho: Bool = false
     
     //TO DO
     //@State var preselectedLocation: LocalizacaoDeInteresse? = nil
@@ -85,11 +110,15 @@ struct DefaultView: View {
             )
         ))
     }
-    
+    // TO-DO show rota carrinho when ponto carrinho selected
     var body: some View {
         ZStack {
             Map(position: $position) {
                 UserAnnotation()
+                if showingRotaCarrinho {
+                    MapPolyline(rotaCarrinho)
+                        .stroke(.azul, lineWidth: 5)
+                }
                 ForEach(blocos, id: \.id) { bloco in
                     Annotation(bloco.nome, coordinate: CLLocationCoordinate2D(
                         latitude: bloco.location?.latitude ?? 0.0,
