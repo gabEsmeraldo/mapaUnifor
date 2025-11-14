@@ -6,11 +6,34 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct DetalhesSheetView: View {
     let local: LocalizacaoDeInteresse
-    let defaultView = DefaultView()
-     
+//    let defaultView = DefaultView()
+    private let startingPoint = CLLocationCoordinate2D(
+        latitude: -3.768171,
+        longitude: -38.478447
+    )
+    
+    @State var route: MKRoute?
+    
+    func getDirections() {
+        self.route = nil
+        
+        // Create and configure the request
+        let request = MKDirections.Request()
+        request.source = MKMapItem(placemark: MKPlacemark(coordinate: self.startingPoint))
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: local.location?.latitude ?? -3.769029, longitude: local.location?.longitude ?? -38.481205)))
+        
+        // Get the directions based on the request
+        Task {
+            let directions = MKDirections(request: request)
+            let response = try? await directions.calculate()
+            route = response?.routes.first
+        }
+    }
+    
     var body: some View {
         ZStack {
             Color(.azul)
@@ -40,24 +63,25 @@ struct DetalhesSheetView: View {
                     .frame(maxHeight: 120)
                     .padding(.top)
                 }
-                
-                }
-                .padding()
-                .background(.branco)
-                .cornerRadius(8)
-            
-                Button("Mostrar Rota"){
-                    defaultView.get
-                }
-                .padding()
-                .background(.branco)
-                .foregroundStyle(.black)
-                .cornerRadius(8)
-                .padding()
             }
+            .padding()
+            .background(.branco)
+            .cornerRadius(8)
+            
+            Button("Mostrar Rota"){
+                getDirections()
+                
+            }
+            .padding()
+            .background(.branco)
+            .foregroundStyle(.black)
+            .cornerRadius(8)
+            .padding()
         }
     }
 }
+
+
 
 #Preview {
     DetalhesSheetView(local: LocalizacaoDeInteresse(id: 0, blocoID: 0, locationID: 0, nome: "Laboratório Vortex", categoria: Categoria.laboratorio, location: Location(id: 0, latitude: 0, longitude: 0, andar: 0, descricao: "O Vortex desenvolve projetos de inovação tecnologica e capacita alunos para atuarem nessa área. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla commodo libero aliquet consequat fringilla. Aliquam nulla purus, pellentesque sit amet volutpat ac, accumsan in purus. Proin id convallis tortor, nec ultrices sem. Quisque sodales leo quis leo blandit egestas. Curabitur id arcu eros. Praesent sed metus orci. Quisque dictum vel nibh eget dapibus. Fusce pulvinar porttitor dignissim. Vivamus eleifend justo et justo malesuada pellentesque. Sed non urna ut orci volutpat facilisis sodales sed massa. Morbi eget ligula vehicula, pretium arcu at, sodales tortor. Nulla id consectetur lectus. Maecenas blandit leo ac convallis facilisis.")))

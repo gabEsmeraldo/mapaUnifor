@@ -28,6 +28,8 @@ func getLocationPin(local: LocalizacaoDeInteresse) -> Image {
 
 struct DefaultView: View {
     
+    @Binding var routeToLocal: MKRoute?
+    
     var blocos = [
         Bloco(id: 1, locationID: 1, nome: "K", location: Location(
             id: 1, latitude: -3.7698, longitude: -38.4788
@@ -86,6 +88,11 @@ struct DefaultView: View {
     var body: some View {
         ZStack {
             Map(position: $position) {
+                
+                if let routeToLocal{
+                    MapPolyline(routeToLocal)
+                        .stroke(.blue, lineWidth: 5)
+                }
                 
                 ForEach(blocos, id: \.id) { bloco in
                     Annotation(bloco.nome, coordinate: CLLocationCoordinate2D(
