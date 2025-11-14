@@ -67,11 +67,12 @@ struct DefaultView: View {
         Banheiro(blocoID: 3, locationID: 10, sexo: "F", acessivel: true,
                  location: Location(id: 10, latitude: -3.77095, longitude: -38.47815)),
     ]
-    
     @State private var selectedBlocoID: Int?
     @State var selectedBloco: Bloco? = nil
     @State private var position: MapCameraPosition
     
+    //TO DO
+    //@State var preselectedLocation: LocalizacaoDeInteresse? = nil
     @State private var selectedLocalizacao: LocalizacaoDeInteresse? = nil
     @State private var lastTappedLocalizacao: LocalizacaoDeInteresse? = nil
     @State private var lastTapDate: Date? = nil
@@ -199,7 +200,20 @@ struct DefaultView: View {
             }
         }
         .onAppear {
-            if let primeiro = blocos.first {
+            /* TO DO
+             if preselectedLocation != nil {
+                for bloco in blocos {
+                    if bloco.id == preselectedLocation?.blocoID {
+                        selectedBloco = bloco
+                        break
+                    }
+                }
+                withAnimation(.easeInOut(duration: 2)) {
+                    zoomInto((preselectedLocation?.location!)!)
+                }
+                 
+            }
+            else*/ if let primeiro = blocos.first {
                 selectBloco(primeiro)
             }
         }

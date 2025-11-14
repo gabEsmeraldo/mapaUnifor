@@ -42,6 +42,9 @@ struct ListView: View {
                                     if(bloco.id == local.blocoID){
                                         //Add Navigation link
                                         HStack {
+//                                            NavigationLink(destination: DefaultView(preselectedLocation: local)) {
+//                                                Image(systemName: "house")
+//                                            }
                                             Text("\(local.nome)")
                                                 .font(.title3)
                                                 .fontWeight(.medium)
