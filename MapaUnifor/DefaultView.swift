@@ -75,6 +75,8 @@ struct DefaultView: View {
     @State private var lastTappedLocalizacao: LocalizacaoDeInteresse? = nil
     @State private var lastTapDate: Date? = nil
     
+    var locationManager = LocationManager()
+    
     init() {
         _position = State(initialValue: .region(
             MKCoordinateRegion(
@@ -87,7 +89,7 @@ struct DefaultView: View {
     var body: some View {
         ZStack {
             Map(position: $position) {
-                
+                UserAnnotation()
                 ForEach(blocos, id: \.id) { bloco in
                     Annotation(bloco.nome, coordinate: CLLocationCoordinate2D(
                         latitude: bloco.location?.latitude ?? 0.0,
@@ -193,6 +195,8 @@ struct DefaultView: View {
             }
         }
         .onAppear {
+            //Checar autorização de localização
+            locationManager.checkLocationAuthorization()
             /* TO DO
              if preselectedLocation != nil {
                 for bloco in blocos {
