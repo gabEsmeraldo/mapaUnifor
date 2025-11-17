@@ -68,6 +68,7 @@ enum Categoria: String, Codable, CaseIterable, Identifiable {
     case laboratorio = "laboratorio"
     case centroAcademico = "centroAcademico"
     case secretariaAcademica = "secretariaAcademica"
+    case diretoriaAcademica = "diretoriaAcademica"
     case equipamentoEsportivo = "equipamentoEsportivo"
     case auditorio = "auditorio"
     case pontoCarrinho = "pontoCarrinho"
@@ -104,12 +105,12 @@ enum Categoria: String, Codable, CaseIterable, Identifiable {
 
 struct LocalizacaoDeInteresse: Identifiable, Hashable, Codable{
     var id: Int
-    var nome: String
-    var imageId: Int
     var blocoID: Int
     var locationID: Int
+    var nome: String
     var categoria: Categoria
     var location: Location?
+    var imageId: Int = 0
     
     func inIn (bloco: Bloco) -> Bool {
         return self.blocoID == bloco.id

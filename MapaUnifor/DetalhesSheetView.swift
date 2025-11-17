@@ -33,7 +33,7 @@ struct DetalhesSheetView: View {
                         Text("Bloco M - Térreo")
                             .font(.headline)
                     }
-                    Text(local.categoria.string)
+                    Text(local.categoria.displayName)
                         .font(.subheadline)
                     if ((local.location?.descricao) != nil) {
                         ScrollView{
