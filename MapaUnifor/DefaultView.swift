@@ -172,7 +172,7 @@ struct DefaultView: View {
     @State private var selectedBlocoID: Int?
     @State private var selectedBloco: Bloco?
     @State private var selectedLocalizacao: LocalizacaoDeInteresse?
-    @State private var showingRotaCarrinho = true
+    @State private var showingRotaCarrinho = false
     @State private var didApplyInitialZoom = false
     
     @State private var position: MapCameraPosition
@@ -217,7 +217,7 @@ struct DefaultView: View {
                             VStack {
                                 Image(systemName: "building.columns")
                                     .foregroundStyle(bloco == selectedBloco ? .red : .blue)
-                                Text(bloco.nome).font(.caption2)
+//                                Text(bloco.nome).font(.caption2)
                             }
                         }
                     }
@@ -231,7 +231,7 @@ struct DefaultView: View {
                                 VStack {
                                     getLocationPin(local: local)
                                         .foregroundStyle(.green)
-                                    Text(local.nome).font(.caption2)
+//                                    Text(local.nome).font(.caption2)
                                 }
                             }
                         }
@@ -244,7 +244,7 @@ struct DefaultView: View {
                             VStack {
                                 getLocationPin(local: ponto)
                                     .foregroundStyle(.blue)
-                                Text(ponto.nome).font(.caption2)
+//                                Text(ponto.nome).font(.caption2)
                             }
                         }
                     }
@@ -259,10 +259,10 @@ struct DefaultView: View {
                                     Image(systemName:
                                             banheiro.sexo == "M"
                                             ? "figure.dress.line.vertical.figure"
-                                            : "figure.line.vertical.figure.dress")
+                                            : "figure.dress.line.vertical.figure")
                                         .foregroundStyle(.yellow)
-                                    Text("Banheiro \(banheiro.sexo)")
-                                        .font(.caption2)
+//                                    Text("Banheiro \(banheiro.sexo)")
+//                                        .font(.caption2)
                                 }
                             }
                         }
