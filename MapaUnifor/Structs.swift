@@ -90,6 +90,7 @@ enum Categoria: String, Codable, CaseIterable, Identifiable {
         case .laboratorio: return "Laboratório"
         case .centroAcademico: return "Centro Acadêmico"
         case .secretariaAcademica: return "Secretaria Acadêmica"
+        case .diretoriaAcademica: return "Diretoria Acadêmica"
         case .equipamentoEsportivo: return "Equipamento Esportivo"
         case .auditorio: return "Auditório"
         case .pontoCarrinho: return "Ponto de Carrinho"
@@ -103,11 +104,10 @@ enum Categoria: String, Codable, CaseIterable, Identifiable {
 
 struct LocalizacaoDeInteresse: Identifiable, Hashable, Codable{
     var id: Int
+    var nome: String
+    var imageId: Int
     var blocoID: Int
     var locationID: Int
-    //    var bloco: Bloco
-    //    var location: Location
-    var nome: String
     var categoria: Categoria
     var location: Location?
     
@@ -123,5 +123,3 @@ struct LocalizacaoDeInteresse: Identifiable, Hashable, Codable{
         hasher.combine(blocoID)
     }
 }
-
-
