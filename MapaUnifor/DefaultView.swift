@@ -1,6 +1,5 @@
 import SwiftUI
 import MapKit
-
 // MARK: - Icones
 
 func getLocationPin(local: LocalizacaoDeInteresse) -> Image {
@@ -12,7 +11,7 @@ func getLocationPin(local: LocalizacaoDeInteresse) -> Image {
     case .secretariaAcademica:
         return Image(systemName: "doc.text.fill")
     case .pontoCarrinho:
-        return Image(systemName: "cart.fill")
+        return Image(systemName: "cablecar.fill")
     case .lanchonete:
         return Image(systemName: "fork.knife.circle.fill")
     case .vendinha:
@@ -89,12 +88,96 @@ struct DefaultView: View {
                  location: Location(id: 8, latitude: -3.76978, longitude: -38.47882))
     ]
     
+    let pontoCarrinho: [LocalizacaoDeInteresse] = [
+        LocalizacaoDeInteresse(
+            id: 300,
+            blocoID: 0,
+            locationID: 300,
+            nome: "Ponto de Carrinho",
+            categoria: .pontoCarrinho,
+            location: Location(id: 300, latitude: -3.7670436, longitude: -38.4792094)
+        ),
+        LocalizacaoDeInteresse(
+            id: 301,
+            blocoID: 0,
+            locationID: 301,
+            nome: "Ponto de Carrinho",
+            categoria: .pontoCarrinho,
+            location: Location(id: 301, latitude: -3.767450, longitude: -38.480101)
+        ),
+        LocalizacaoDeInteresse(
+            id: 302,
+            blocoID: 0,
+            locationID: 302,
+            nome: "Ponto de Carrinho",
+            categoria: .pontoCarrinho,
+            location: Location(id: 302, latitude: -3.768541, longitude: -38.479597)
+        ),
+        LocalizacaoDeInteresse(
+            id: 303,
+            blocoID: 0,
+            locationID: 303,
+            nome: "Ponto de Carrinho",
+            categoria: .pontoCarrinho,
+            location: Location(id: 303, latitude: -3.768186, longitude: -38.478787)
+        ),
+        LocalizacaoDeInteresse(
+            id: 304,
+            blocoID: 0,
+            locationID: 304,
+            nome: "Ponto de Carrinho",
+            categoria: .pontoCarrinho,
+            location: Location(id: 304, latitude: -3.768836, longitude: -38.478438)
+        ),
+        LocalizacaoDeInteresse(
+            id: 305,
+            blocoID: 0,
+            locationID: 305,
+            nome: "Ponto de Carrinho",
+            categoria: .pontoCarrinho,
+            location: Location(id: 305, latitude: -3.770313, longitude: -38.478229)
+        ),
+        LocalizacaoDeInteresse(
+            id: 306,
+            blocoID: 0,
+            locationID: 306,
+            nome: "Ponto de Carrinho",
+            categoria: .pontoCarrinho,
+            location: Location(id: 306, latitude: -3.770047, longitude: -38.475990)
+        ),
+        LocalizacaoDeInteresse(
+            id: 307,
+            blocoID: 0,
+            locationID: 307,
+            nome: "Ponto de Carrinho",
+            categoria: .pontoCarrinho,
+            location: Location(id: 307, latitude: -3.767044, longitude: -38.476450)
+        ),
+        LocalizacaoDeInteresse(
+            id: 308,
+            blocoID: 0,
+            locationID: 308,
+            nome: "Ponto de Carrinho",
+            categoria: .pontoCarrinho,
+            location: Location(id: 308, latitude: -3.767161, longitude: -38.477543)
+        ),
+        LocalizacaoDeInteresse(
+            id: 309,
+            blocoID: 0,
+            locationID: 309,
+            nome: "Ponto de Carrinho",
+            categoria: .pontoCarrinho,
+            location: Location(id: 309, latitude: -3.768451, longitude: -38.477617)
+        )
+    ]
+
+    
     
     // MARK: Estados
     @State private var selectedBlocoID: Int?
     @State private var selectedBloco: Bloco?
     @State private var selectedLocalizacao: LocalizacaoDeInteresse?
-    @State private var showingRotaCarrinho = false
+    @State private var showingRotaCarrinho = true
     @State private var didApplyInitialZoom = false
     
     @State private var position: MapCameraPosition
@@ -155,6 +238,18 @@ struct DefaultView: View {
                                         .foregroundStyle(.green)
                                     Text(local.nome).font(.caption2)
                                 }
+                            }
+                        }
+                    }
+                }
+                
+                ForEach(pontoCarrinho) { ponto in
+                    Annotation(ponto.nome, coordinate: ponto.location!.coordinate) {
+                        Button { showingRotaCarrinho.toggle() } label: {
+                            VStack {
+                                getLocationPin(local: ponto)
+                                    .foregroundStyle(.blue)
+                                Text(ponto.nome).font(.caption2)
                             }
                         }
                     }
