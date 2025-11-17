@@ -98,6 +98,7 @@ struct DefaultView: View {
     @State private var didApplyInitialZoom = false
     
     @State private var position: MapCameraPosition
+    @State private var showingRotaCarrinho: Bool = false
     
     var preselectedLocation: LocalizacaoDeInteresse?
     
