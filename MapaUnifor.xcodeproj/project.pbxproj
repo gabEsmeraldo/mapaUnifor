@@ -13,6 +13,7 @@
 		C48D0AF52EC2163D0074EA90 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48D0AF42EC2163D0074EA90 /* ContentView.swift */; };
 		C48D0AF72EC2163F0074EA90 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C48D0AF62EC2163F0074EA90 /* Assets.xcassets */; };
 		C48D0AFA2EC2163F0074EA90 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C48D0AF92EC2163F0074EA90 /* Preview Assets.xcassets */; };
+		C504ADE72EC75CC700E74C54 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C504ADE62EC75CC700E74C54 /* LocationManager.swift */; };
 		C544EDDF2EC4C58000FEED13 /* DetalhesSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C544EDDE2EC4C58000FEED13 /* DetalhesSheetView.swift */; };
 		C5C5EBE92EC3650E0048F52F /* Structs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C5EBE82EC3650E0048F52F /* Structs.swift */; };
 		C5C5EBEB2EC366D00048F52F /* DefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C5EBEA2EC366D00048F52F /* DefaultView.swift */; };
@@ -29,6 +30,7 @@
 		C48D0AF42EC2163D0074EA90 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C48D0AF62EC2163F0074EA90 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C48D0AF92EC2163F0074EA90 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		C504ADE62EC75CC700E74C54 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		C544EDDE2EC4C58000FEED13 /* DetalhesSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetalhesSheetView.swift; sourceTree = "<group>"; };
 		C5C5EBE82EC3650E0048F52F /* Structs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Structs.swift; sourceTree = "<group>"; };
 		C5C5EBEA2EC366D00048F52F /* DefaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultView.swift; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 				C48D0AF42EC2163D0074EA90 /* ContentView.swift */,
 				C5C5EBEA2EC366D00048F52F /* DefaultView.swift */,
 				C544EDDE2EC4C58000FEED13 /* DetalhesSheetView.swift */,
+				C504ADE62EC75CC700E74C54 /* LocationManager.swift */,
 				C5C5EBEC2EC366D70048F52F /* ListView.swift */,
 				C5C5EBE82EC3650E0048F52F /* Structs.swift */,
 				C5EF36E72EC37E2F0044AD1C /* Contato.swift */,
@@ -171,6 +174,7 @@
 				C42536DE2EC74BDB00062789 /* RouteManager.swift in Sources */,
 				C48D0AF32EC2163D0074EA90 /* MapaUniforApp.swift in Sources */,
 				C5EF36E62EC37E1F0044AD1C /* ContatosView.swift in Sources */,
+				C504ADE72EC75CC700E74C54 /* LocationManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,6 +310,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"MapaUnifor/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "The application needs permission for your location";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -337,6 +343,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"MapaUnifor/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "The application needs permission for your location";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

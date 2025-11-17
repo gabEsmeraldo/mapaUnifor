@@ -28,8 +28,61 @@ func getLocationPin(local: LocalizacaoDeInteresse) -> Image {
 
 struct DefaultView: View {
     
+<<<<<<< HEAD
     @EnvironmentObject var coordinator: MapCoordinator
     @StateObject var routeManager = RouteManager()
+=======
+    var coordenadasRotaCarrinho = [
+        CLLocationCoordinate2D(latitude: -3.76834, longitude: -38.47850),
+        CLLocationCoordinate2D(latitude: -3.76872, longitude: -38.47944),
+        CLLocationCoordinate2D(latitude: -3.76658, longitude: -38.48036),
+        CLLocationCoordinate2D(latitude: -3.76650, longitude: -38.47932),
+        CLLocationCoordinate2D(latitude: -3.76905, longitude: -38.47826),
+        CLLocationCoordinate2D(latitude: -3.76923, longitude: -38.47836),
+        CLLocationCoordinate2D(latitude: -3.76934, longitude: -38.47863),
+        CLLocationCoordinate2D(latitude: -3.77036, longitude: -38.47823),
+        CLLocationCoordinate2D(latitude: -3.77010, longitude: -38.47588),
+        CLLocationCoordinate2D(latitude: -3.76706, longitude: -38.47624),
+        CLLocationCoordinate2D(latitude: -3.76695, longitude: -38.47642),
+        CLLocationCoordinate2D(latitude: -3.76703, longitude: -38.47766),
+        CLLocationCoordinate2D(latitude: -3.76857, longitude: -38.47752),
+        CLLocationCoordinate2D(latitude: -3.76860, longitude: -38.47813),
+        CLLocationCoordinate2D(latitude: -3.76827, longitude: -38.47836),
+        CLLocationCoordinate2D(latitude: -3.76834, longitude: -38.47850)
+    ]
+    
+    var rotaCarrinho: MKPolyline {
+        MKPolyline(coordinates: coordenadasRotaCarrinho, count: coordenadasRotaCarrinho.count)
+    }
+    
+    
+    var blocos = [
+        Bloco(id: 1, locationID: 1, nome: "K", location: Location(
+            id: 1, latitude: -3.7698, longitude: -38.4788
+        )),
+        Bloco(id: 2, locationID: 2, nome: "J", location: Location(
+            id: 2, latitude: -3.7705, longitude: -38.4792
+        )),
+        Bloco(id: 3, locationID: 3, nome: "H", location: Location(
+            id: 3, latitude: -3.7710, longitude: -38.4782
+        )),
+    ]
+    
+    var localizacoes = [
+        LocalizacaoDeInteresse(id: 1,
+                               blocoID: 1, locationID: 4, nome: "Lab. de Informática", categoria: .laboratorio,
+                               location: Location(id: 4, latitude: -3.7697, longitude: -38.4789)
+                              ),
+        LocalizacaoDeInteresse(id: 2,
+                               blocoID: 2, locationID: 5, nome: "Cantina Bloco J", categoria: .lanchonete,
+                               location: Location(id: 5, latitude: -3.7707, longitude: -38.4791)
+                              ),
+        LocalizacaoDeInteresse(id: 3,
+                               blocoID: 3, locationID: 6, nome: "Secretaria Acadêmica", categoria: .secretariaAcademica,
+                               location: Location(id: 6, latitude: -3.7709, longitude: -38.4781)
+                              ),
+    ]
+>>>>>>> main
     
     var blocos = [ Bloco(id: 1, locationID: 1, nome: "K", location: Location( id: 1, latitude: -3.7698, longitude: -38.4788 )), Bloco(id: 2, locationID: 2, nome: "J", location: Location( id: 2, latitude: -3.7705, longitude: -38.4792 )), Bloco(id: 3, locationID: 3, nome: "H", location: Location( id: 3, latitude: -3.7710, longitude: -38.4782 )), ]
     var localizacoes = [ LocalizacaoDeInteresse(id: 1, blocoID: 1, locationID: 4, nome: "Lab. de Informática", categoria: .laboratorio, location: Location(id: 4, latitude: -3.7697, longitude: -38.4789) ), LocalizacaoDeInteresse(id: 2, blocoID: 2, locationID: 5, nome: "Cantina Bloco J", categoria: .lanchonete, location: Location(id: 5, latitude: -3.7707, longitude: -38.4791) ), LocalizacaoDeInteresse(id: 3, blocoID: 3, locationID: 6, nome: "Secretaria Acadêmica", categoria: .secretariaAcademica, location: Location(id: 6, latitude: -3.7709, longitude: -38.4781) ), ]
@@ -42,10 +95,15 @@ struct DefaultView: View {
     @State private var selectedLocalizacao: LocalizacaoDeInteresse?
     
     @State private var position: MapCameraPosition
+<<<<<<< HEAD
     @State private var didApplyInitialZoom = false
+=======
+    @State private var showingRotaCarrinho: Bool = false
+>>>>>>> main
     
     var preselectedLocation: LocalizacaoDeInteresse?
     
+<<<<<<< HEAD
     init(preselectedLocation: LocalizacaoDeInteresse? = nil) {
         self.preselectedLocation = preselectedLocation
         
@@ -55,12 +113,24 @@ struct DefaultView: View {
                     span: MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001)
                 ))
         )
-    }
+=======
+    var locationManager = LocationManager()
     
+    init() {
+        _position = State(initialValue: .region(
+            MKCoordinateRegion(
+                center: CLLocationCoordinate2D(latitude: -3.7700, longitude: -38.4788),
+                span: MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001)
+            )
+        ))
+>>>>>>> main
+    }
+    // TO-DO show rota carrinho when ponto carrinho selected
     var body: some View {
         ZStack {
             
             Map(position: $position) {
+<<<<<<< HEAD
                 
                 if routeManager.showingRoute, let route = routeManager.route {
                     MapPolyline(route)
@@ -72,6 +142,21 @@ struct DefaultView: View {
                     Annotation(bloco.nome,
                                coordinate: bloco.location!.coordinate) {
                         Button { selectBloco(bloco) } label: {
+=======
+                UserAnnotation()
+                if showingRotaCarrinho {
+                    MapPolyline(rotaCarrinho)
+                        .stroke(.azul, lineWidth: 5)
+                }
+                ForEach(blocos, id: \.id) { bloco in
+                    Annotation(bloco.nome, coordinate: CLLocationCoordinate2D(
+                        latitude: bloco.location?.latitude ?? 0.0,
+                        longitude: bloco.location?.longitude ?? 0.0)
+                    ) {
+                        Button {
+                            selectBloco(bloco)
+                        } label: {
+>>>>>>> main
                             VStack {
                                 Image(systemName: "building.columns")
                                     .foregroundStyle(bloco == selectedBloco ? .red : .blue)
@@ -144,6 +229,7 @@ struct DefaultView: View {
         }
         
         .onAppear {
+<<<<<<< HEAD
             guard !didApplyInitialZoom else { return }
             didApplyInitialZoom = true
             
@@ -160,6 +246,16 @@ struct DefaultView: View {
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         selectedLocalizacao = local
+=======
+            //Checar autorização de localização
+            locationManager.checkLocationAuthorization()
+            /* TO DO
+             if preselectedLocation != nil {
+                for bloco in blocos {
+                    if bloco.id == preselectedLocation?.blocoID {
+                        selectedBloco = bloco
+                        break
+>>>>>>> main
                     }
                     
                 } else if let primeiro = blocos.first {
