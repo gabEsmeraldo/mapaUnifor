@@ -68,7 +68,7 @@ enum Categoria: String, Codable, CaseIterable, Identifiable {
     case laboratorio = "laboratorio"
     case centroAcademico = "centroAcademico"
     case secretariaAcademica = "secretariaAcademica"
-    case diretoriaAcademica = "diretoriaAcademica"
+    case diretoriaAcademica = "diretoriaAcadêmica"
     case equipamentoEsportivo = "equipamentoEsportivo"
     case auditorio = "auditorio"
     case pontoCarrinho = "pontoCarrinho"
