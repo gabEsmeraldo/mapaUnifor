@@ -12,13 +12,13 @@ struct Location: Identifiable, Codable {
     var id: Int
     var latitude: Double
     var longitude: Double
-    var andar: Int?
+    var andar: String?
     var descricao: String?
 }
 
 struct Bloco: Identifiable, Hashable, Equatable, Codable {
     var id: Int
-    var locationID: Int
+    var positionID: Int
     var nome: String
     var location: Location?
     

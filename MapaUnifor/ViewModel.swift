@@ -7,7 +7,7 @@
 
 import Foundation
 
-let dbVarDict: [String: String] = ["mapauniforlocais": "location", "mapauniforbloco": "bloco", "mapauniforinteresse": "localizacaoDeInteresse"]
+let dbVarDict: [String: String] = ["localizacoes": "location", "bloco": "bloco", "interesses": "localizacaoDeInteresse"]
 
 class ViewModel: ObservableObject {
     @Published var posicoes: [Location] = []

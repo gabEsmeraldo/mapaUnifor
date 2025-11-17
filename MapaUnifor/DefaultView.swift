@@ -31,7 +31,7 @@ func getLocationPin(local: LocalizacaoDeInteresse) -> Image {
 // MARK: - VIEW
 
 struct DefaultView: View {
-    
+    @StateObject var viewModel = ViewModel()
     @EnvironmentObject var coordinator: MapCoordinator
     @StateObject var routeManager = RouteManager()
     @StateObject var locationManager = LocationManager()
@@ -61,11 +61,6 @@ struct DefaultView: View {
         MKPolyline(coordinates: coordenadasRotaCarrinho, count: coordenadasRotaCarrinho.count)
     }
     
-    let blocos = [
-        Bloco(id: 1, locationID: 1, nome: "K", location: Location(id: 1, latitude: -3.7698, longitude: -38.4788)),
-        Bloco(id: 2, locationID: 2, nome: "J", location: Location(id: 2, latitude: -3.7705, longitude: -38.4792)),
-        Bloco(id: 3, locationID: 3, nome: "H", location: Location(id: 3, latitude: -3.7710, longitude: -38.4782))
-    ]
     
     let localizacoes = [
         LocalizacaoDeInteresse(id: 1, blocoID: 1, locationID: 4,
@@ -216,8 +211,8 @@ struct DefaultView: View {
                 }
                 
                 // Blocos
-                ForEach(blocos) { bloco in
-                    Annotation(bloco.nome, coordinate: bloco.location!.coordinate) {
+                ForEach(viewModel.blocos) { bloco in
+                    Annotation(bloco.nome, coordinate: bloco.location?.coordinate ?? CLLocationCoordinate2D()) {
                         Button { selectBloco(bloco) } label: {
                             VStack {
                                 Image(systemName: "building.columns")
@@ -280,7 +275,7 @@ struct DefaultView: View {
             // Picker de bloco
             VStack {
                 Picker("Bloco", selection: $selectedBlocoID) {
-                    ForEach(blocos) { b in
+                    ForEach(viewModel.blocos) { b in
                         Text("Bloco \(b.nome)").tag(Optional(b.id))
                     }
                 }
@@ -296,13 +291,14 @@ struct DefaultView: View {
         }
         
         .onAppear {
+            viewModel.fetch(db: "bloco")
             locationManager.checkLocationAuthorization()
             
             if !didApplyInitialZoom {
                 didApplyInitialZoom = true
                 
                 if let local = preselectedLocation,
-                   let bloco = blocos.first(where: { $0.id == local.blocoID }),
+                   let bloco = viewModel.blocos.first(where: { $0.id == local.blocoID }),
                    let loc = local.location {
                     
                     selectedBloco = bloco
@@ -314,7 +310,7 @@ struct DefaultView: View {
         }
         
         .onChange(of: selectedBlocoID) { id in
-            if let bloco = blocos.first(where: { $0.id == id }) {
+            if let bloco = viewModel.blocos.first(where: { $0.id == id }) {
                 selectBloco(bloco)
             }
         }
@@ -322,7 +318,7 @@ struct DefaultView: View {
         .onChange(of: coordinator.selectedLocalizacao) { local in
             if let local { handleLocalizacaoTap(local) }
         }
-        
+         
         .sheet(item: $selectedLocalizacao) { local in
             DetalhesSheetView(local: local, routeManager: routeManager)
         }
