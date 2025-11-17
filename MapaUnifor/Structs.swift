@@ -40,7 +40,8 @@ struct Bloco: Identifiable, Hashable, Equatable {
 
 
 
-struct Banheiro: Hashable {
+struct Banheiro: Hashable, Identifiable {
+    var id: Int
     var blocoID: Int
     var locationID: Int
     //    var bloco: Bloco

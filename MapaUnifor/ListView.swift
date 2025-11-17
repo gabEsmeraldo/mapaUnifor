@@ -40,14 +40,10 @@ struct ListView: View {
     ]
     
     var banheiros = [
-        Banheiro(blocoID: 1, locationID: 7, sexo: "M", acessivel: true,
+        Banheiro(id: 1, blocoID: 1, locationID: 7, sexo: "M", acessivel: true,
                  location: Location(id: 7, latitude: -3.76975, longitude: -38.47885)),
-        Banheiro(blocoID: 1, locationID: 8, sexo: "F", acessivel: true,
-                 location: Location(id: 8, latitude: -3.76978, longitude: -38.47882)),
-        Banheiro(blocoID: 2, locationID: 9, sexo: "M", acessivel: false,
-                 location: Location(id: 9, latitude: -3.77065, longitude: -38.47905)),
-        Banheiro(blocoID: 3, locationID: 10, sexo: "F", acessivel: true,
-                 location: Location(id: 10, latitude: -3.77095, longitude: -38.47815)),
+        Banheiro(id: 2, blocoID: 1, locationID: 8, sexo: "F", acessivel: true,
+                 location: Location(id: 8, latitude: -3.76978, longitude: -38.47882))
     ]
     var body: some View {
         ZStack {
