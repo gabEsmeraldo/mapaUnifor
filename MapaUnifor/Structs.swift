@@ -8,7 +8,7 @@
 import Foundation
 //Analisar como organizar o banco baseado nas structs, também checar se seria possível usar somente um, ou necessario usar um por struct.
 //Checar se realmente a implementação utilizando id é mais facil do que com os objetos
-struct Location: Identifiable {
+struct Location: Identifiable, Codable {
     var id: Int
     var latitude: Double
     var longitude: Double
@@ -16,7 +16,7 @@ struct Location: Identifiable {
     var descricao: String?
 }
 
-struct Bloco: Identifiable, Hashable, Equatable {
+struct Bloco: Identifiable, Hashable, Equatable, Codable {
     var id: Int
     var locationID: Int
     var nome: String
@@ -64,20 +64,28 @@ struct Banheiro: Hashable, Identifiable {
     }
 }
 
-enum Categoria: CaseIterable, Identifiable {
-    case laboratorio
-    case centroAcademico
-    case secretariaAcademica
-    case equipamentoEsportivo
-    case auditorio
-    case pontoCarrinho
-    case lanchonete
-    case vendinha
-    case pontoInstitucional
-    // TODO adicionar mais
-    var id: Self { self }
+enum Categoria: String, Codable, CaseIterable, Identifiable {
+    case laboratorio = "laboratorio"
+    case centroAcademico = "centroAcademico"
+    case secretariaAcademica = "secretariaAcademica"
+    case equipamentoEsportivo = "equipamentoEsportivo"
+    case auditorio = "auditorio"
+    case pontoCarrinho = "pontoCarrinho"
+    case lanchonete = "lanchonete"
+    case vendinha = "vendinha"
+    case pontoInstitucional = "pontoInstitucional"
+    case unknown = "unknown"   // fallback
+
+    var id: String { rawValue }
     
-    var string: String {
+    init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            let value = try container.decode(String.self)
+
+            self = Categoria(rawValue: value) ?? .unknown
+    }
+
+    var displayName: String {
         switch self {
         case .laboratorio: return "Laboratório"
         case .centroAcademico: return "Centro Acadêmico"
@@ -88,11 +96,12 @@ enum Categoria: CaseIterable, Identifiable {
         case .lanchonete: return "Lanchonete"
         case .vendinha: return "Vendinha"
         case .pontoInstitucional: return "Ponto Institucional"
+        case .unknown: return "Outro"
         }
     }
 }
 
-struct LocalizacaoDeInteresse: Identifiable, Hashable{
+struct LocalizacaoDeInteresse: Identifiable, Hashable, Codable{
     var id: Int
     var blocoID: Int
     var locationID: Int
