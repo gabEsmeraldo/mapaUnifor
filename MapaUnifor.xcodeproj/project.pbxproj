@@ -75,10 +75,10 @@
 				C5C5EBEC2EC366D70048F52F /* ListView.swift */,
 				C5C5EBE82EC3650E0048F52F /* Structs.swift */,
 				C5EF36E72EC37E2F0044AD1C /* Contato.swift */,
-				C48D0AF62EC2163F0074EA90 /* Assets.xcassets */,
-				C48D0AF82EC2163F0074EA90 /* Preview Content */,
 				C42536DD2EC74BDB00062789 /* RouteManager.swift */,
 				C42536DF2EC75ABE00062789 /* MapCoordinator.swift */,
+				C48D0AF62EC2163F0074EA90 /* Assets.xcassets */,
+				C48D0AF82EC2163F0074EA90 /* Preview Content */,
 			);
 			path = MapaUnifor;
 			sourceTree = "<group>";

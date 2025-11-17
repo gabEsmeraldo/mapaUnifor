@@ -18,52 +18,53 @@ struct DetalhesSheetView: View {
         ZStack {
             Color(.azul)
                 .ignoresSafeArea()
-            VStack (alignment: .center){
-                AsyncImage(url: URL(string: "https://example.com/your_image.jpg"))
-                    .frame(width: 300, height: 400)
-                Text(local.nome)
-                    .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                if local.location?.andar ?? 0 > 0 {
-                    Text("Bloco M - " + String(local.location?.andar ?? 0) + "º andar")
-                        .font(.headline)
-                    
-                } else {
-                    Text("Bloco M - Térreo")
-                        .font(.headline)
+            ScrollView {
+                VStack (alignment: .center){
+                    AsyncImage(url: URL(string: "https://example.com/your_image.jpg"))
+                        .frame(width: 300, height: 400)
+                    Text(local.nome)
+                        .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
+                        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                    if local.location?.andar ?? 0 > 0 {
+                        Text("Bloco M - " + String(local.location?.andar ?? 0) + "º andar")
+                            .font(.headline)
+                        
+                    } else {
+                        Text("Bloco M - Térreo")
+                            .font(.headline)
+                    }
+                    Text(local.categoria.string)
+                        .font(.subheadline)
+                    if ((local.location?.descricao) != nil) {
+                        ScrollView{
+                            Text(local.location?.descricao ?? "")
+                            
+                        }
+                        .frame(width: 300)
+                        .frame(maxHeight: 120)
+                        .padding(.top)
+                    }
                 }
-                Text(local.categoria.string)
-                    .font(.subheadline)
-                if ((local.location?.descricao) != nil) {
-                    ScrollView{
-                        Text(local.location?.descricao ?? "")
+                .padding()
+                .background(.branco)
+                .cornerRadius(8)
+                
+                Button("Mostrar Rota") {
+                    if let lat = local.location?.latitude,
+                       let lon = local.location?.longitude {
+                        routeManager.setDestination(latitude: lat, longitude: lon)
+                        routeManager.getDirections()
+                        routeManager.showingRoute = true
                         
                     }
-                    .frame(width: 300)
-                    .frame(maxHeight: 120)
-                    .padding(.top)
+                    dismiss()
                 }
+                .padding()
+                .background(.branco)
+                .foregroundStyle(.black)
+                .cornerRadius(8)
+                .padding()
             }
-            .padding()
-            .background(.branco)
-            .cornerRadius(8)
-            
-            Button("Mostrar Rota") {
-                if let lat = local.location?.latitude,
-                   let lon = local.location?.longitude {
-                    routeManager.setDestination(latitude: lat, longitude: lon)
-                    routeManager.getDirections()
-                    routeManager.showingRoute = true
-                    
-                }
-                dismiss()
-            }
-
-            .padding()
-            .background(.branco)
-            .foregroundStyle(.black)
-            .cornerRadius(8)
-            .padding()
         }
     }
 }
