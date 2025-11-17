@@ -6,8 +6,6 @@
 //
 
 import Foundation
-//Analisar como organizar o banco baseado nas structs, também checar se seria possível usar somente um, ou necessario usar um por struct.
-//Checar se realmente a implementação utilizando id é mais facil do que com os objetos
 struct Location: Identifiable {
     var id: Int
     var latitude: Double
@@ -16,7 +14,7 @@ struct Location: Identifiable {
     var descricao: String?
 }
 
-struct Bloco: Identifiable, Hashable, Equatable {
+struct Bloco: Identifiable, Hashable {
     var id: Int
     var locationID: Int
     var nome: String
@@ -30,7 +28,7 @@ struct Bloco: Identifiable, Hashable, Equatable {
     }
     
     static func == (lhs: Bloco, rhs: Bloco) -> Bool {
-        return lhs.id == rhs.id
+        return false
     }
     
     func hash(into hasher: inout Hasher) {
@@ -40,8 +38,7 @@ struct Bloco: Identifiable, Hashable, Equatable {
 
 
 
-struct Banheiro: Hashable, Identifiable {
-    var id: Int
+struct Banheiro: Hashable {
     var blocoID: Int
     var locationID: Int
     //    var bloco: Bloco
@@ -68,6 +65,7 @@ enum Categoria: CaseIterable, Identifiable {
     case laboratorio
     case centroAcademico
     case secretariaAcademica
+    case diretoriaAcademica
     case equipamentoEsportivo
     case auditorio
     case pontoCarrinho
@@ -82,6 +80,7 @@ enum Categoria: CaseIterable, Identifiable {
         case .laboratorio: return "Laboratório"
         case .centroAcademico: return "Centro Acadêmico"
         case .secretariaAcademica: return "Secretaria Acadêmica"
+        case .diretoriaAcademica: return "Diretoria Acadêmica"
         case .equipamentoEsportivo: return "Equipamento Esportivo"
         case .auditorio: return "Auditório"
         case .pontoCarrinho: return "Ponto de Carrinho"
@@ -94,11 +93,10 @@ enum Categoria: CaseIterable, Identifiable {
 
 struct LocalizacaoDeInteresse: Identifiable, Hashable{
     var id: Int
+    var nome: String
+    var imageId: Int
     var blocoID: Int
     var locationID: Int
-    //    var bloco: Bloco
-    //    var location: Location
-    var nome: String
     var categoria: Categoria
     var location: Location?
     
@@ -114,5 +112,3 @@ struct LocalizacaoDeInteresse: Identifiable, Hashable{
         hasher.combine(blocoID)
     }
 }
-
-
