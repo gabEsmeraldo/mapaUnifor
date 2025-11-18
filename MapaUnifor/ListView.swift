@@ -12,13 +12,13 @@ struct ListView: View {
     @State var showingBloco: Bloco? = nil
      
     var blocos = [
-        Bloco(id: 1, positionID: 1, nome: "K", location: Location(
+        Bloco(id: 1, positionID: 1, nome: "K", localizacao: Location(
             id: 1, latitude: -3.7698, longitude: -38.4788
         )),
-        Bloco(id: 2, positionID: 2, nome: "J", location: Location(
+        Bloco(id: 2, positionID: 2, nome: "J", localizacao: Location(
             id: 2, latitude: -3.7705, longitude: -38.4792
         )),
-        Bloco(id: 3, positionID: 3, nome: "H", location: Location(
+        Bloco(id: 3, positionID: 3, nome: "H", localizacao: Location(
             id: 3, latitude: -3.7710, longitude: -38.4782
         )),
     ]
@@ -26,15 +26,15 @@ struct ListView: View {
     var localidadesDeInteresse = [
         LocalizacaoDeInteresse(id: 1,
                                blocoID: 1, locationID: 4, nome: "Lab. de Informática", categoria: .laboratorio,
-                               location: Location(id: 4, latitude: -3.7697, longitude: -38.4789)
+                               localizacao: Location(id: 4, latitude: -3.7697, longitude: -38.4789)
                               ),
         LocalizacaoDeInteresse(id: 2,
                                blocoID: 2, locationID: 5, nome: "Cantina Bloco J", categoria: .lanchonete,
-                               location: Location(id: 5, latitude: -3.7707, longitude: -38.4791)
+                               localizacao: Location(id: 5, latitude: -3.7707, longitude: -38.4791)
                               ),
         LocalizacaoDeInteresse(id: 3,
                                blocoID: 3, locationID: 6, nome: "Secretaria Acadêmica", categoria: .secretariaAcademica,
-                               location: Location(id: 6, latitude: -3.7709, longitude: -38.4781)
+                               localizacao: Location(id: 6, latitude: -3.7709, longitude: -38.4781)
                               ),
     ]
     

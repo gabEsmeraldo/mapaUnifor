@@ -20,7 +20,11 @@ struct DetalhesSheetView: View {
                 .ignoresSafeArea()
             ScrollView {
                 VStack (alignment: .center){
-                    AsyncImage(url: URL(string: "https://example.com/your_image.jpg"))
+                    AsyncImage(url: URL(string: "https://pub-dd01e9fdd76946b4b3f0ddfdf9c3cc58.r2.dev/image/\(local.imageId).jpg")){ image in
+                        image
+                            .image?.resizable()
+                            .scaledToFit()
+                    }
                         .frame(width: 300, height: 400)
                     Text(local.nome)
                         .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
@@ -30,14 +34,14 @@ struct DetalhesSheetView: View {
 //                            .font(.headline)
 //                        
 //                    } else {
-                    Text("Bloco M - " + (local.location?.andar!)!)
+                    Text("Bloco M - " + (local.localizacao?.andar!)!)
                             .font(.headline)
 //                    }
                     Text(local.categoria.displayName)
                         .font(.subheadline)
-                    if ((local.location?.descricao) != nil) {
+                    if ((local.localizacao?.descricao) != nil) {
                         ScrollView{
-                            Text(local.location?.descricao ?? "")
+                            Text(local.localizacao?.descricao ?? "")
                             
                         }
                         .frame(width: 300)
@@ -50,8 +54,8 @@ struct DetalhesSheetView: View {
                 .cornerRadius(8)
                 
                 Button("Mostrar Rota") {
-                    if let lat = local.location?.latitude,
-                       let lon = local.location?.longitude {
+                    if let lat = local.localizacao?.latitude,
+                       let lon = local.localizacao?.longitude {
                         routeManager.setDestination(latitude: lat, longitude: lon)
                         routeManager.getDirections()
                         routeManager.showingRoute = true
@@ -72,7 +76,7 @@ struct DetalhesSheetView: View {
 
 
 #Preview {
-    DetalhesSheetView(local: LocalizacaoDeInteresse(id: 0, blocoID: 0, locationID: 0, nome: "Laboratório Vortex", categoria: Categoria.laboratorio, location: Location(id: 0, latitude: 0, longitude: 0, andar: "terreo", descricao: "O Vortex desenvolve projetos de inovação tecnologica e capacita alunos para atuarem nessa área. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla commodo libero aliquet consequat fringilla. Aliquam nulla purus, pellentesque sit amet volutpat ac, accumsan in purus. Proin id convallis tortor, nec ultrices sem. Quisque sodales leo quis leo blandit egestas. Curabitur id arcu eros. Praesent sed metus orci. Quisque dictum vel nibh eget dapibus. Fusce pulvinar porttitor dignissim. Vivamus eleifend justo et justo malesuada pellentesque. Sed non urna ut orci volutpat facilisis sodales sed massa. Morbi eget ligula vehicula, pretium arcu at, sodales tortor. Nulla id consectetur lectus. Maecenas blandit leo ac convallis facilisis.")), routeManager: RouteManager())
+    DetalhesSheetView(local: LocalizacaoDeInteresse(id: 0, blocoID: 0, locationID: 0, nome: "Laboratório Vortex", categoria: Categoria.laboratorio, localizacao: Location(id: 0, latitude: 0, longitude: 0, andar: "terreo", descricao: "O Vortex desenvolve projetos de inovação tecnologica e capacita alunos para atuarem nessa área. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla commodo libero aliquet consequat fringilla. Aliquam nulla purus, pellentesque sit amet volutpat ac, accumsan in purus. Proin id convallis tortor, nec ultrices sem. Quisque sodales leo quis leo blandit egestas. Curabitur id arcu eros. Praesent sed metus orci. Quisque dictum vel nibh eget dapibus. Fusce pulvinar porttitor dignissim. Vivamus eleifend justo et justo malesuada pellentesque. Sed non urna ut orci volutpat facilisis sodales sed massa. Morbi eget ligula vehicula, pretium arcu at, sodales tortor. Nulla id consectetur lectus. Maecenas blandit leo ac convallis facilisis."), imageId: 1), routeManager: RouteManager())
         .environmentObject(MapCoordinator())
 
 }

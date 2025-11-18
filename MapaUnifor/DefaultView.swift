@@ -65,15 +65,15 @@ struct DefaultView: View {
     let localizacoes = [
         LocalizacaoDeInteresse(id: 1, blocoID: 1, locationID: 4,
                                nome: "Lab. de Informática", categoria: .laboratorio,
-                               location: Location(id: 4, latitude: -3.7697, longitude: -38.4789)),
+                               localizacao: Location(id: 4, latitude: -3.7697, longitude: -38.4789)),
         
         LocalizacaoDeInteresse(id: 2, blocoID: 2, locationID: 5,
                                nome: "Cantina Bloco J", categoria: .lanchonete,
-                               location: Location(id: 5, latitude: -3.7707, longitude: -38.4791)),
+                               localizacao: Location(id: 5, latitude: -3.7707, longitude: -38.4791)),
         
         LocalizacaoDeInteresse(id: 3, blocoID: 3, locationID: 6,
                                nome: "Secretaria Acadêmica", categoria: .secretariaAcademica,
-                               location: Location(id: 6, latitude: -3.7709, longitude: -38.4781)),
+                               localizacao: Location(id: 6, latitude: -3.7709, longitude: -38.4781)),
     ]
     
     let banheiros = [
@@ -90,7 +90,7 @@ struct DefaultView: View {
             locationID: 300,
             nome: "Ponto de Carrinho",
             categoria: .pontoCarrinho,
-            location: Location(id: 300, latitude: -3.7670436, longitude: -38.4792094)
+            localizacao: Location(id: 300, latitude: -3.7670436, longitude: -38.4792094)
         ),
         LocalizacaoDeInteresse(
             id: 301,
@@ -98,7 +98,7 @@ struct DefaultView: View {
             locationID: 301,
             nome: "Ponto de Carrinho",
             categoria: .pontoCarrinho,
-            location: Location(id: 301, latitude: -3.767450, longitude: -38.480101)
+            localizacao: Location(id: 301, latitude: -3.767450, longitude: -38.480101)
         ),
         LocalizacaoDeInteresse(
             id: 302,
@@ -106,7 +106,7 @@ struct DefaultView: View {
             locationID: 302,
             nome: "Ponto de Carrinho",
             categoria: .pontoCarrinho,
-            location: Location(id: 302, latitude: -3.768541, longitude: -38.479597)
+            localizacao: Location(id: 302, latitude: -3.768541, longitude: -38.479597)
         ),
         LocalizacaoDeInteresse(
             id: 303,
@@ -114,7 +114,7 @@ struct DefaultView: View {
             locationID: 303,
             nome: "Ponto de Carrinho",
             categoria: .pontoCarrinho,
-            location: Location(id: 303, latitude: -3.768186, longitude: -38.478787)
+            localizacao: Location(id: 303, latitude: -3.768186, longitude: -38.478787)
         ),
         LocalizacaoDeInteresse(
             id: 304,
@@ -122,7 +122,7 @@ struct DefaultView: View {
             locationID: 304,
             nome: "Ponto de Carrinho",
             categoria: .pontoCarrinho,
-            location: Location(id: 304, latitude: -3.768836, longitude: -38.478438)
+            localizacao: Location(id: 304, latitude: -3.768836, longitude: -38.478438)
         ),
         LocalizacaoDeInteresse(
             id: 305,
@@ -130,7 +130,7 @@ struct DefaultView: View {
             locationID: 305,
             nome: "Ponto de Carrinho",
             categoria: .pontoCarrinho,
-            location: Location(id: 305, latitude: -3.770313, longitude: -38.478229)
+            localizacao: Location(id: 305, latitude: -3.770313, longitude: -38.478229)
         ),
         LocalizacaoDeInteresse(
             id: 306,
@@ -138,7 +138,7 @@ struct DefaultView: View {
             locationID: 306,
             nome: "Ponto de Carrinho",
             categoria: .pontoCarrinho,
-            location: Location(id: 306, latitude: -3.770047, longitude: -38.475990)
+            localizacao: Location(id: 306, latitude: -3.770047, longitude: -38.475990)
         ),
         LocalizacaoDeInteresse(
             id: 307,
@@ -146,7 +146,7 @@ struct DefaultView: View {
             locationID: 307,
             nome: "Ponto de Carrinho",
             categoria: .pontoCarrinho,
-            location: Location(id: 307, latitude: -3.767044, longitude: -38.476450)
+            localizacao: Location(id: 307, latitude: -3.767044, longitude: -38.476450)
         ),
         LocalizacaoDeInteresse(
             id: 308,
@@ -154,7 +154,7 @@ struct DefaultView: View {
             locationID: 308,
             nome: "Ponto de Carrinho",
             categoria: .pontoCarrinho,
-            location: Location(id: 308, latitude: -3.767161, longitude: -38.477543)
+            localizacao: Location(id: 308, latitude: -3.767161, longitude: -38.477543)
         ),
         LocalizacaoDeInteresse(
             id: 309,
@@ -162,7 +162,7 @@ struct DefaultView: View {
             locationID: 309,
             nome: "Ponto de Carrinho",
             categoria: .pontoCarrinho,
-            location: Location(id: 309, latitude: -3.768451, longitude: -38.477617)
+            localizacao: Location(id: 309, latitude: -3.768451, longitude: -38.477617)
         )
     ]
 
@@ -212,7 +212,7 @@ struct DefaultView: View {
                 
                 // Blocos
                 ForEach(viewModel.blocos) { bloco in
-                    Annotation(bloco.nome, coordinate: bloco.location?.coordinate ?? CLLocationCoordinate2D()) {
+                    Annotation(bloco.nome, coordinate: bloco.localizacao?.coordinate ?? CLLocationCoordinate2D()) {
                         Button { selectBloco(bloco) } label: {
                             VStack {
                                 Image(systemName: "building.columns")
@@ -225,8 +225,8 @@ struct DefaultView: View {
                 
                 // Locais do bloco selecionado
                 if let bloco = selectedBloco {
-                    ForEach(localizacoes.filter { $0.blocoID == bloco.id }) { local in
-                        Annotation(local.nome, coordinate: local.location!.coordinate) {
+                    ForEach(viewModel.localizacoes.filter { $0.blocoID == bloco.id }) { local in
+                        Annotation(local.nome, coordinate: local.localizacao!.coordinate) {
                             Button { handleLocalizacaoTap(local) } label: {
                                 VStack {
                                     getLocationPin(local: local)
@@ -239,8 +239,10 @@ struct DefaultView: View {
                 }
                 
                 ForEach(pontoCarrinho) { ponto in
-                    Annotation(ponto.nome, coordinate: ponto.location!.coordinate) {
-                        Button { showingRotaCarrinho.toggle() } label: {
+                    Annotation(ponto.nome, coordinate: ponto.localizacao!.coordinate) {
+                        Button {
+                            showingRotaCarrinho.toggle()
+                        } label: {
                             VStack {
                                 getLocationPin(local: ponto)
                                     .foregroundStyle(.blue)
@@ -291,7 +293,9 @@ struct DefaultView: View {
         }
         
         .onAppear {
-            viewModel.fetch(db: "bloco")
+//            viewModel.fetch(db: "localizacoes")
+            viewModel.fetch(ip: "192.168.128.14", db: "blocos")
+            viewModel.fetch(ip: "192.168.128.14", db: "interesses")
             locationManager.checkLocationAuthorization()
             
             if !didApplyInitialZoom {
@@ -299,7 +303,7 @@ struct DefaultView: View {
                 
                 if let local = preselectedLocation,
                    let bloco = viewModel.blocos.first(where: { $0.id == local.blocoID }),
-                   let loc = local.location {
+                   let loc = local.localizacao {
                     
                     selectedBloco = bloco
                     selectedBlocoID = bloco.id
@@ -328,7 +332,7 @@ struct DefaultView: View {
     // MARK: Helpers
     
     private func handleLocalizacaoTap(_ local: LocalizacaoDeInteresse) {
-        if let loc = local.location {
+        if let loc = local.localizacao {
             zoomInto(loc)
             selectedLocalizacao = local
             routeManager.showingRoute = true
@@ -337,7 +341,7 @@ struct DefaultView: View {
     
     private func selectBloco(_ bloco: Bloco) {
         selectedBloco = bloco
-        if let loc = bloco.location { zoomInto(loc) }
+        if let loc = bloco.localizacao { zoomInto(loc) }
     }
     
     private func zoomInto(_ location: Location) {

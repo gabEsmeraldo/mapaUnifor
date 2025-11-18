@@ -20,7 +20,7 @@ struct Bloco: Identifiable, Hashable, Equatable, Codable {
     var id: Int
     var positionID: Int
     var nome: String
-    var location: Location?
+    var localizacao: Location?
     
     static func == (lhs: Bloco, rhs: Bloco?) -> Bool {
         if let rhs {
@@ -109,7 +109,7 @@ struct LocalizacaoDeInteresse: Identifiable, Hashable, Codable{
     var locationID: Int
     var nome: String
     var categoria: Categoria
-    var location: Location?
+    var localizacao: Location?
     var imageId: Int = 0
     
     func inIn (bloco: Bloco) -> Bool {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-let dbVarDict: [String: String] = ["localizacoes": "location", "bloco": "bloco", "interesses": "localizacaoDeInteresse"]
+let dbVarDict: [String: String] = ["localizacoes": "location", "bloco": "bloco", "interesses": "localizacaoDeInteresse", "blocos": "bloco"]
 
 class ViewModel: ObservableObject {
     @Published var posicoes: [Location] = []
@@ -30,10 +30,18 @@ class ViewModel: ObservableObject {
                     DispatchQueue.main.async { self?.posicoes = parsed }
                 case "bloco":
                     let parsed = try decoder.decode([Bloco].self, from: data)
-                    DispatchQueue.main.async { self?.blocos = parsed }
+                    DispatchQueue.main.async {
+                        self?.blocos = parsed
+                        print(self?.blocos)
+
+                    }
+
                 case "localizacaoDeInteresse":
                     let parsed = try decoder.decode([LocalizacaoDeInteresse].self, from: data)
-                    DispatchQueue.main.async { self?.localizacoes = parsed }
+                    DispatchQueue.main.async {
+                        self?.localizacoes = parsed
+                    }
+
                 default:
                     print("Unknown db key: \(db)")
                 }
