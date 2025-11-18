@@ -202,7 +202,7 @@ struct DefaultView: View {
     var body: some View {
         ZStack {
             Map(position: $position) {
-                
+                UserAnnotation()
                 if routeManager.showingRoute, let route = routeManager.route {
                     MapPolyline(route).stroke(.blue, lineWidth: 5)
                 }
