@@ -23,8 +23,16 @@ struct DetalhesSheetView: View {
                 VStack (alignment: .center){
                     AsyncImage(url: URL(string: "https://pub-dd01e9fdd76946b4b3f0ddfdf9c3cc58.r2.dev/image/\(local.imageId).jpg")){ image in
                         image
-                            .image?.resizable()
+                            .resizable()
                             .scaledToFit()
+                            .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/.opacity(0.3))
+                    } placeholder: {
+                        ZStack {
+                            Color(.gray)
+                                .cornerRadius(8)
+                            ProgressView()
+                                .scaleEffect(CGSize(width: 3, height: 3))
+                        }
                     }
                         .frame(width: 300, height: 400)
                     Text(local.nome)
