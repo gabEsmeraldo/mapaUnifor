@@ -32,7 +32,6 @@ class ViewModel: ObservableObject {
                     let parsed = try decoder.decode([Bloco].self, from: data)
                     DispatchQueue.main.async {
                         self?.blocos = parsed
-                        print(self?.blocos)
 
                     }
 

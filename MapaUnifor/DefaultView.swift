@@ -174,6 +174,7 @@ struct DefaultView: View {
     @State private var selectedLocalizacao: LocalizacaoDeInteresse?
     @State private var showingRotaCarrinho = false
     @State private var didApplyInitialZoom = false
+    @State private var showSheet = false
     
     @State private var position: MapCameraPosition
     
@@ -301,15 +302,7 @@ struct DefaultView: View {
             if !didApplyInitialZoom {
                 didApplyInitialZoom = true
                 
-                if let local = preselectedLocation,
-                   let bloco = viewModel.blocos.first(where: { $0.id == local.blocoID }),
-                   let loc = local.localizacao {
-                    
-                    selectedBloco = bloco
-                    selectedBlocoID = bloco.id
-                    zoomInto(loc)
-                    selectedLocalizacao = local
-                }
+                
             }
         }
         
@@ -320,8 +313,20 @@ struct DefaultView: View {
         }
         
         .onChange(of: coordinator.selectedLocalizacao) { local in
-            if let local { handleLocalizacaoTap(local) }
-        }
+            if let preSelected = coordinator.selectedLocalizacao{
+                print(preSelected)
+                for bloco in viewModel.blocos{
+                    if bloco.id == preSelected.blocoID{
+                        print(preSelected)
+                        selectedBloco = bloco
+                        selectedBlocoID = bloco.id
+                        zoomInto(preSelected.localizacao!)
+                        selectedLocalizacao = preSelected
+                        handleLocalizacaoTap(preSelected)
+                        break
+                    }
+                }
+            }        }
          
         .sheet(item: $selectedLocalizacao) { local in
             DetalhesSheetView(local: local, bloco: selectedBloco!, routeManager: routeManager)
@@ -349,7 +354,7 @@ struct DefaultView: View {
             position = .camera(
                 MapCamera(
                     centerCoordinate: location.coordinate,
-                    distance: 35,
+                    distance: 100,
                     heading: 0,
                     pitch: 0
                 )

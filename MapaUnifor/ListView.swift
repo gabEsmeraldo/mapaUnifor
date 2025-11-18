@@ -10,7 +10,7 @@ import SwiftUI
 struct ListView: View {
     @EnvironmentObject var coordinator: MapCoordinator
     @State var showingBloco: Bloco? = nil
-     
+    @StateObject var viewModel = ViewModel()
     var blocos = [
         Bloco(id: 1, positionID: 1, nome: "K", localizacao: Location(
             id: 1, latitude: -3.7698, longitude: -38.4788
@@ -51,7 +51,7 @@ struct ListView: View {
             NavigationStack{
                 ScrollView(.vertical) {
                     VStack{
-                        ForEach(blocos){ bloco in
+                        ForEach(viewModel.blocos){ bloco in
                             VStack {
                                 Text("\(bloco.nome)")
                                     .font(.title)
@@ -67,7 +67,7 @@ struct ListView: View {
                                         }
                                     }
                                 if (showingBloco == bloco){
-                                    ForEach(localidadesDeInteresse){ local in
+                                    ForEach(viewModel.localizacoes){ local in
                                         if(bloco.id == local.blocoID){
                                             //Add Navigation link
                                             HStack {
@@ -104,6 +104,11 @@ struct ListView: View {
             }
                
 
+        }
+        
+        .onAppear {
+            viewModel.fetch(ip: "192.168.128.14", db: "blocos")
+            viewModel.fetch(ip: "192.168.128.14", db: "interesses")
         }
     }
 }
