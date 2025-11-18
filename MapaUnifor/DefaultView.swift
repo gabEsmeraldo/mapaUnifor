@@ -278,7 +278,7 @@ struct DefaultView: View {
             VStack {
                 Picker("Bloco", selection: $selectedBlocoID) {
                     ForEach(viewModel.blocos) { b in
-                        Text("Bloco \(b.nome)").tag(Optional(b.id))
+                        Text("\(b.nome)").tag(Optional(b.id))
                     }
                 }
                 .pickerStyle(.menu)
@@ -324,7 +324,7 @@ struct DefaultView: View {
         }
          
         .sheet(item: $selectedLocalizacao) { local in
-            DetalhesSheetView(local: local, routeManager: routeManager)
+            DetalhesSheetView(local: local, bloco: selectedBloco!, routeManager: routeManager)
         }
     }
     
